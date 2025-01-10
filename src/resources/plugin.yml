@@ -1,0 +1,14 @@
+name: UHCPoints
+version: '${version}'
+main: com.example.uhcpoints.UHCPoints
+api-version: '1.19'
+depend: [PlaceholderAPI]
+commands:
+  uhcpoints:
+    description: UHC Points commands
+    usage: /<command> <start|end|dump>
+permissions:
+  uhcpoints.bypass:
+    description: Bypass UHC Points ranking
+    default: op
+

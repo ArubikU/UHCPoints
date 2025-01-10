@@ -1,0 +1,17 @@
+points:
+  first-kill: 50
+  kill: 30
+  notch-apple: 5
+  high-level-enchant: 5
+  game-start: 10
+  first-place: 100
+  second-place: 60
+  third-place: 20
+
+messages:
+  points-earned: "<green>You earned <points> points! Total: <total>"
+  usage: "<yellow>Usage: /uhcpoints <start|end|dump>"
+  uhc-started: "<green>UHC started. All players received 10 points."
+  uhc-ended: "<green>UHC ended. Top players received bonus points."
+  points-dumped: "<green>Points dumped to points.yml"
+
