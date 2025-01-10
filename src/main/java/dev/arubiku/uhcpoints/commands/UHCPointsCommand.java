@@ -1,16 +1,17 @@
 package dev.arubiku.uhcpoints.commands;
 
-import dev.arubiku.uhcpoints.UHCPoints;
-import io.papermc.paper.command.brigadier.Commands;
-import io.papermc.paper.event.lifecycle.LifecycleEventManager;
-import io.papermc.paper.event.lifecycle.LifecycleEvents;
-import net.kyori.adventure.text.Component;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.util.List;
+import dev.arubiku.uhcpoints.UHCPoints;
+import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import net.kyori.adventure.text.Component;
 
 public class UHCPointsCommand {
     private final UHCPoints plugin;
@@ -55,6 +56,7 @@ public class UHCPointsCommand {
 
     private int endUHC(CommandSender sender) {
         List<Player> alivePlayers = Bukkit.getOnlinePlayers().stream()
+                .map(player -> (Player) player)
                 .filter(player -> !player.hasPermission("uhcpoints.bypass"))
                 .sorted((p1, p2) -> plugin.getPointManager().getPlayerPoints(p2.getName())
                         - plugin.getPointManager().getPlayerPoints(p1.getName()))

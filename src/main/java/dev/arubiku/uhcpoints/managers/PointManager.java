@@ -1,17 +1,21 @@
 package dev.arubiku.uhcpoints.managers;
 
-import dev.arubiku.uhcpoints.UHCPoints;
-import dev.arubiku.uhcpoints.api.PointProvider;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
+import dev.arubiku.uhcpoints.UHCPoints;
+import dev.arubiku.uhcpoints.api.PointProvider;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public class PointManager {
     private final UHCPoints plugin;
@@ -57,6 +61,10 @@ public class PointManager {
                     .replace("<total>", String.valueOf(playerPoints.get(player.getName()))));
             player.sendMessage(component);
         }
+    }
+
+    public Map<String, Integer> getPoints() {
+        return playerPoints;
     }
 
     public int getPlayerPoints(String playerName) {

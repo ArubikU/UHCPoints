@@ -18,13 +18,12 @@ java {
 repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
-    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+    maven("https://repo.extendedclip.com/releases/")
 }
 
 dependencies {
     paperweight.paperDevBundle("1.21.3-R0.1-SNAPSHOT")
-    compileOnly("me.clip:placeholderapi:2.11.3")
-    implementation("net.kyori:adventure-text-minimessage:4.14.0")
+    compileOnly("me.clip:placeholderapi:2.11.6")
 }
 
 tasks {

@@ -1,12 +1,13 @@
 package dev.arubiku.uhcpoints.placeholders;
 
-import dev.arubiku.uhcpoints.UHCPoints;
-import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.bukkit.entity.Player;
-
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import org.bukkit.entity.Player;
+
+import dev.arubiku.uhcpoints.UHCPoints;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
 public class UHCPointsPlaceholder extends PlaceholderExpansion {
     private final UHCPoints plugin;
@@ -48,7 +49,7 @@ public class UHCPointsPlaceholder extends PlaceholderExpansion {
             String[] parts = identifier.split("_");
             if (parts.length == 3) {
                 int place = Integer.parseInt(parts[1]);
-                List<Map.Entry<String, Integer>> sortedPlayers = plugin.getPointManager().getPlayerPoints().entrySet()
+                List<Map.Entry<String, Integer>> sortedPlayers = plugin.getPointManager().getPoints().entrySet()
                         .stream()
                         .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
                         .collect(Collectors.toList());
