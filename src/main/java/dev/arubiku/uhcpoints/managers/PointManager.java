@@ -51,6 +51,8 @@ public class PointManager {
 
         if (provider != null && provider.shouldAwardPoints(player)) {
             int points = provider.getPoints(player);
+            if (points == 0)
+                return;
             int currentPoints = playerPoints.getOrDefault(player.getName(), 0);
             playerPoints.put(player.getName(), currentPoints + points);
 
