@@ -13,8 +13,7 @@ Los jugadores pueden ganar puntos a través de varias acciones:
 1. Primera muerte del juego: 50 puntos
 2. Muertes subsiguientes: 30 puntos
 3. Consumir una manzana de Notch: 5 puntos
-4. Minar mineral de diamante (cada 5 diamantes): 1 punto
-5. Encantamiento de alto nivel (nivel 30+): 5 puntos
+4. Encantamiento de alto nivel (nivel 30+): 5 puntos
 
 ## Placeholders
 
