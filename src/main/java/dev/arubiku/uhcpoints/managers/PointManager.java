@@ -65,6 +65,21 @@ public class PointManager {
         }
     }
 
+    public void addPoints(Player player, int points) {
+        if (points == 0)
+            return;
+        int currentPoints = playerPoints.getOrDefault(player.getName(), 0);
+        playerPoints.put(player.getName(), currentPoints + points);
+
+        String message = config.getString("messages.points-earned",
+                "<green>You earned <points> points! Total: <total>");
+        Component component = miniMessage.deserialize(message
+                .replace("<points>", String.valueOf(points))
+                .replace("<total>", String.valueOf(playerPoints.get(player.getName()))));
+        player.sendMessage(component);
+
+    }
+
     public Map<String, Integer> getPoints() {
         return playerPoints;
     }

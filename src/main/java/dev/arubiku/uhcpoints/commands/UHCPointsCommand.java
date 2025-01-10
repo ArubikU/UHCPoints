@@ -7,8 +7,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+
 import dev.arubiku.uhcpoints.UHCPoints;
 import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
+import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.Component;
@@ -41,6 +45,17 @@ public class UHCPointsCommand {
                             .then(Commands.literal("dump").executes(context -> {
                                 return dumpPoints(context.getSource().getSender());
                             }))
+                            .then(Commands.literal("givepoints")
+                                    .then(Commands.argument("player", ArgumentTypes.player()))
+                                    .then(Commands.argument("points", IntegerArgumentType.integer()))
+                                    .executes(context -> {
+                                        plugin.getPointManager().addPoints(
+                                                context.getArgument("player", PlayerSelectorArgumentResolver.class)
+                                                        .resolve(context.getSource()).get(0),
+                                                IntegerArgumentType.getInteger(context, "points"));
+
+                                        return 1;
+                                    }))
                             .build(),
                     "UHC Points commands",
                     List.of("uhcp"));
