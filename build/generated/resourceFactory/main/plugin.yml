@@ -1,0 +1,18 @@
+api-version: '1.21'
+name: UHCPoints
+version: 1.0.0
+main: dev.arubiku.uhcpoints.UHCPoints
+description: A Minecraft plugin for UHC points management
+authors:
+- ArubikU
+depend:
+- PlaceholderAPI
+commands:
+    uhcpoints:
+        description: UHC Points main command
+        permission: uhcpoints.use
+permissions:
+    uhcpoints.bypass:
+        description: Bypass UHC Points ranking
+    uhcpoints.use:
+        description: Allows use of UHC Points commands

@@ -38,6 +38,9 @@ tasks {
     processResources {
         filteringCharset = Charsets.UTF_8.name()
     }
+    reobfJar {
+        dependsOn("build")
+    }
 }
 
 paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.REOBF_PRODUCTION
