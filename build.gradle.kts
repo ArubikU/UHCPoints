@@ -5,6 +5,7 @@ plugins {
     id("io.papermc.paperweight.userdev") version "1.7.5"
     id("xyz.jpenilla.run-paper") version "2.3.0"
     id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.1.1"
+    id("io.github.goooler.shadow") version "8.1.7"
 }
 
 group = "dev.arubiku"
@@ -24,7 +25,15 @@ repositories {
 dependencies {
     paperweight.paperDevBundle("1.21.3-R0.1-SNAPSHOT")
     compileOnly("me.clip:placeholderapi:2.11.6")
+    implementation("dev.jorel:commandapi-bukkit-shade:9.6.0")
 }
+
+/*tasks.withType<ShadowJar> {
+    relocate("dev.jorel.commandapi", "dev.arubiku.uhcpoints.libs.commandapi")
+    manifest {
+        attributes["paperweight-mappings-namespace"] = "spigot"
+    }
+}*/
 
 tasks {
     compileJava {
