@@ -22,8 +22,8 @@ Usa estos placeholders con PlaceholderAPI:
 
 - `%uhcpoints_points%`: Muestra los puntos actuales del jugador
 - `%uhcpoints_ownplace%`: Muestra la clasificación actual del jugador
-- `%uhcpoints_place_<número>_points%`: Muestra los puntos del jugador en la clasificación especificada
-- `%uhcpoints_place_<número>_name%`: Muestra el nombre del jugador en la clasificación especificada
+- `%uhcpoints_place_{número}_points%`: Muestra los puntos del jugador en la clasificación especificada
+- `%uhcpoints_place_{número}_name%`: Muestra el nombre del jugador en la clasificación especificada
 
 ## Permisos
 
