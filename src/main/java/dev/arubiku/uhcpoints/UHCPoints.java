@@ -1,10 +1,11 @@
 package dev.arubiku.uhcpoints;
 
+import org.bukkit.plugin.java.JavaPlugin;
+
 import dev.arubiku.uhcpoints.commands.UHCPointsCommand;
 import dev.arubiku.uhcpoints.listeners.UHCPointsListener;
 import dev.arubiku.uhcpoints.managers.PointManager;
 import dev.arubiku.uhcpoints.placeholders.UHCPointsPlaceholder;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class UHCPoints extends JavaPlugin {
     private PointManager pointManager;
@@ -22,6 +23,7 @@ public class UHCPoints extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        pointManager.dumpPoints();
         getLogger().info("UHCPoints has been disabled!");
     }
 

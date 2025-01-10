@@ -65,11 +65,13 @@ public class UHCPointsCommand {
         if (!alivePlayers.isEmpty()) {
             plugin.getPointManager().addPoints(alivePlayers.get(0), "first_place");
         }
-        if (alivePlayers.size() > 1) {
-            plugin.getPointManager().addPoints(alivePlayers.get(1), "second_place");
+        List<Player> lastDeads = plugin.getPointManager().getLastTwoDead().stream().map(s -> Bukkit.getPlayer(s))
+                .toList();
+        if (!lastDeads.isEmpty()) {
+            plugin.getPointManager().addPoints(lastDeads.get(0), "second_place");
         }
-        if (alivePlayers.size() > 2) {
-            plugin.getPointManager().addPoints(alivePlayers.get(2), "third_place");
+        if (lastDeads.size() > 1) {
+            plugin.getPointManager().addPoints(lastDeads.get(1), "third_place");
         }
 
         sendMessage(sender, "messages.uhc-ended");
