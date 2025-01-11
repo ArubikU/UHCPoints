@@ -5,8 +5,6 @@ main: dev.arubiku.uhcpoints.UHCPoints
 description: A Minecraft plugin for UHC points management
 authors:
 - ArubikU
-depend:
-- PlaceholderAPI
 commands:
     uhcpoints:
         description: UHC Points main command
