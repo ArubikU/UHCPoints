@@ -1,16 +1,15 @@
 package dev.arubiku.uhcpoints.listeners;
 
-import dev.arubiku.uhcpoints.UHCPoints;
-import dev.arubiku.uhcpoints.api.PointProvider;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.metadata.FixedMetadataValue;
+
+import dev.arubiku.uhcpoints.UHCPoints;
+import dev.arubiku.uhcpoints.api.PointProvider;
 
 public class UHCPointsListener implements Listener {
     private final UHCPoints plugin;
@@ -21,6 +20,22 @@ public class UHCPointsListener implements Listener {
     }
 
     private void registerDefaultPointProviders() {
+        plugin.getPointManager().registerPointProvider(new PointProvider() {
+            @Override
+            public String getId() {
+                return "game_start";
+            }
+
+            @Override
+            public int getPoints(Player player) {
+                return plugin.getPointManager().getConfig().getInt("points.game-start", 50);
+            }
+
+            @Override
+            public boolean shouldAwardPoints(Player player) {
+                return true;
+            }
+        });
         plugin.getPointManager().registerPointProvider(new PointProvider() {
             @Override
             public String getId() {
@@ -81,6 +96,57 @@ public class UHCPointsListener implements Listener {
             @Override
             public int getPoints(Player player) {
                 return plugin.getPointManager().getConfig().getInt("points.high-level-enchant", 5);
+            }
+
+            @Override
+            public boolean shouldAwardPoints(Player player) {
+                return true;
+            }
+        });
+
+        plugin.getPointManager().registerPointProvider(new PointProvider() {
+            @Override
+            public String getId() {
+                return "first_place";
+            }
+
+            @Override
+            public int getPoints(Player player) {
+                return plugin.getPointManager().getConfig().getInt("points.first-place", 5);
+            }
+
+            @Override
+            public boolean shouldAwardPoints(Player player) {
+                return true;
+            }
+        });
+
+        plugin.getPointManager().registerPointProvider(new PointProvider() {
+            @Override
+            public String getId() {
+                return "second_place";
+            }
+
+            @Override
+            public int getPoints(Player player) {
+                return plugin.getPointManager().getConfig().getInt("points.second-place", 5);
+            }
+
+            @Override
+            public boolean shouldAwardPoints(Player player) {
+                return true;
+            }
+        });
+
+        plugin.getPointManager().registerPointProvider(new PointProvider() {
+            @Override
+            public String getId() {
+                return "third_place";
+            }
+
+            @Override
+            public int getPoints(Player player) {
+                return plugin.getPointManager().getConfig().getInt("points.third-place", 5);
             }
 
             @Override

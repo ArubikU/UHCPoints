@@ -48,7 +48,6 @@ bukkitPluginYaml {
     main = "dev.arubiku.uhcpoints.UHCPoints"
     apiVersion = "1.21"
     authors.add("ArubikU")
-    depend.add("PlaceholderAPI")
     commands {
         register("uhcpoints") {
             description = "UHC Points main command"
