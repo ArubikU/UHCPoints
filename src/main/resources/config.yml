@@ -1,5 +1,6 @@
 points:
   first-kill: 50
+  first-kill-lobby: 20
   kill: 30
   notch-apple: 5
   high-level-enchant: 5
