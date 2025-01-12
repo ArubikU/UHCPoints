@@ -15,3 +15,412 @@ messages:
   uhc-ended: "<green>UHC ended. Top players received bonus points."
   points-dumped: "<green>Points dumped to points.yml"
 
+ranks:
+  none:
+    points:
+      min: 0
+      max: 49
+    prefix: "<gray>"
+    suffix: ""
+    effects:
+      onWin:
+        message-all: "<gray>%player% won!"
+
+  copper_i:
+    points:
+      min: 50
+      max: 149
+    prefix: "<#b87333>"
+    suffix: " ⭐<#ffffff>"
+    effects:
+      onKill:
+        particle: REDSTONE
+        sound: block.copper.break
+      onWin:
+        message-all: "<#b87333>%player%<white> won!"
+      onRankup:
+        message: "<#b87333>You achieved Copper I Rank!"
+
+  copper_ii:
+    points:
+      min: 150
+      max: 299
+    prefix: "<#b87333>"
+    suffix: " ⭐⭐<#ffffff>"
+    effects:
+      onKill:
+        particle: REDSTONE
+        sound: block.copper.break
+      onWin:
+        message-all: "<#b87333>%player%<white> won!"
+        particle: REDSTONE
+      onRankup:
+        message: "<#b87333>You achieved Copper II Rank!"
+        sound: block.copper.break
+
+  copper_iii:
+    points:
+      min: 300
+      max: 499
+    prefix: "<#b87333>"
+    suffix: " ⭐⭐⭐<#ffffff>"
+    effects:
+      onKill:
+        particle: REDSTONE
+        sound: block.copper.break
+      onWin:
+        message-all: "<#b87333>%player%<white> won!"
+        particle: REDSTONE
+        sound: block.copper.break
+      onRankup:
+        message: "<#b87333>You achieved Copper III Rank!"
+        sound: entity.player.levelup
+
+  iron_i:
+    points:
+      min: 500
+      max: 749
+    prefix: "<#c0c0c0>"
+    suffix: " ⭐<#ffffff>"
+    effects:
+      onKill:
+        particle: BLOCK_CRACK
+        block: iron_block
+        sound: block.iron_block.break
+      onWin:
+        message-all: "<#c0c0c0>%player%<white> won!"
+        particle: BLOCK_CRACK
+        block: iron_block
+      onRankup:
+        message: "<#c0c0c0>You achieved Iron I Rank!"
+        sound: entity.player.levelup
+
+  iron_ii:
+    points:
+      min: 750
+      max: 999
+    prefix: "<#c0c0c0>"
+    suffix: " ⭐⭐<#ffffff>"
+    effects:
+      onKill:
+        particle: BLOCK_CRACK
+        block: iron_block
+        sound: block.iron_block.break
+      onWin:
+        message-all: "<#c0c0c0>%player%<white> won!"
+        particle: BLOCK_CRACK
+        block: iron_block
+        sound: block.iron_block.break
+      onRankup:
+        message: "<#c0c0c0>You achieved Iron II Rank!"
+        sound: entity.player.levelup
+
+  iron_iii:
+    points:
+      min: 1000
+      max: 1499
+    prefix: "<#c0c0c0>"
+    suffix: " ⭐⭐⭐<#ffffff>"
+    effects:
+      onKill:
+        particle: BLOCK_CRACK
+        block: iron_block
+        sound: block.iron_block.break
+      onWin:
+        message-all: "<#c0c0c0>%player%<white> won!"
+        particle: BLOCK_CRACK
+        block: iron_block
+        sound: block.iron_block.break
+      onRankup:
+        message: "<#c0c0c0>You achieved Iron III Rank!"
+        sound: entity.player.levelup
+        particle: FIREWORK
+
+  gold_i:
+    points:
+      min: 1500
+      max: 1999
+    prefix: "<#ffd700>"
+    suffix: " ⭐<#ffffff>"
+    effects:
+      onKill:
+        particle: BLOCK_CRACK
+        block: gold_block
+        sound: block.gold_block.break
+      onWin:
+        message-all: "<#ffd700>%player%<white> won!"
+        particle: BLOCK_CRACK
+        block: gold_block
+        sound: block.gold_block.break
+      onRankup:
+        message: "<#ffd700>You achieved Gold I Rank!"
+        sound: entity.player.levelup
+        particle: FIREWORK
+
+  gold_ii:
+    points:
+      min: 2000
+      max: 2499
+    prefix: "<#ffd700>"
+    suffix: " ⭐⭐<#ffffff>"
+    effects:
+      onKill:
+        particle: BLOCK_CRACK
+        block: gold_block
+        sound: block.gold_block.break
+      onWin:
+        message-all: "<#ffd700>%player%<white> won!"
+        particle: BLOCK_CRACK
+        block: gold_block
+        sound: block.gold_block.break
+      onRankup:
+        message: "<#ffd700>You achieved Gold II Rank!"
+        sound: entity.player.levelup
+        particle: FIREWORK
+
+  gold_iii:
+    points:
+      min: 2500
+      max: 3499
+    prefix: "<#ffd700>"
+    suffix: " ⭐⭐⭐<#ffffff>"
+    effects:
+      onKill:
+        particle: BLOCK_CRACK
+        block: gold_block
+        sound: block.gold_block.break
+      onWin:
+        message-all: "<#ffd700>%player%<white> won!"
+        particle: BLOCK_CRACK
+        block: gold_block
+        sound: block.gold_block.break
+      onRankup:
+        message: "<#ffd700>You achieved Gold III Rank!"
+        sound: entity.player.levelup
+        particle: FIREWORK
+
+  diamond_i:
+    points:
+      min: 3500
+      max: 4499
+    prefix: "<#4169e1>"
+    suffix: " ⭐<#ffffff>"
+    effects:
+      onKill:
+        particle: BLOCK_CRACK
+        block: diamond_block
+        sound: block.diamond_block.break
+      onWin:
+        message-all: "<#4169e1>%player%<white> won!"
+        particle: BLOCK_CRACK
+        block: diamond_block
+        sound: block.diamond_block.break
+      onRankup:
+        message: "<#4169e1>You achieved Diamond I Rank!"
+        sound: entity.player.levelup
+        particle: FIREWORK
+
+  diamond_ii:
+    points:
+      min: 4500
+      max: 5499
+    prefix: "<#4169e1>"
+    suffix: " ⭐⭐<#ffffff>"
+    effects:
+      onKill:
+        particle: BLOCK_CRACK
+        block: diamond_block
+        sound: block.diamond_block.break
+      onWin:
+        message-all: "<#4169e1>%player%<white> won!"
+        particle: BLOCK_CRACK
+        block: diamond_block
+        sound: block.diamond_block.break
+      onRankup:
+        message: "<#4169e1>You achieved Diamond II Rank!"
+        sound: entity.player.levelup
+        particle: FIREWORK
+
+  diamond_iii:
+    points:
+      min: 5500
+      max: 7499
+    prefix: "<#4169e1>"
+    suffix: " ⭐⭐⭐<#ffffff>"
+    effects:
+      onKill:
+        particle: BLOCK_CRACK
+        block: diamond_block
+        sound: block.diamond_block
+
+  emerald_i:
+    points:
+      min: 7500
+      max: 9499
+    prefix: "<#50c878>"
+    suffix: " ⭐<#ffffff>"
+    effects:
+      onKill:
+        particle: EMERALD_BLOCK
+        sound: block.emerald.break
+      onWin:
+        message-all: "<#50c878>%player%<white> won!"
+        particle: EMERALD_BLOCK
+        sound: block.emerald.break
+      onRankup:
+        message: "<#50c878>You achieved Emerald I Rank!"
+        sound: entity.player.levelup
+        particle: FIREWORKS_SPARK
+
+  emerald_ii:
+    points:
+      min: 9500
+      max: 11499
+    prefix: "<#50c878>"
+    suffix: " ⭐⭐<#ffffff>"
+    effects:
+      onKill:
+        particle: EMERALD_BLOCK
+        sound: block.emerald.break
+      onWin:
+        message-all: "<#50c878>%player%<white> won!"
+        particle: EMERALD_BLOCK
+        sound: block.emerald.break
+      onRankup:
+        message: "<#50c878>You achieved Emerald II Rank!"
+        sound: entity.player.levelup
+        particle: FIREWORKS_SPARK
+
+  emerald_iii:
+    points:
+      min: 11500
+      max: 14999
+    prefix: "<#50c878>"
+    suffix: " ⭐⭐⭐<#ffffff>"
+    effects:
+      onKill:
+        particle: EMERALD_BLOCK
+        sound: block.emerald.break
+      onWin:
+        message-all: "<#50c878>%player%<white> won!"
+        particle: EMERALD_BLOCK
+        sound: block.emerald.break
+      onRankup:
+        message: "<#50c878>You achieved Emerald III Rank!"
+        sound: entity.player.levelup
+        particle: FIREWORKS_SPARK
+
+  netherite_i:
+    points:
+      min: 15000
+      max: 19999
+    prefix: "<#4a4a4a>"
+    suffix: " ⭐<#ffffff>"
+    effects:
+      onKill:
+        particle: SMOKE_NORMAL
+        sound: block.netherite_block.break
+      onWin:
+        message-all: "<#4a4a4a>%player%<white> won!"
+        particle: SMOKE_NORMAL
+        sound: block.netherite_block.break
+      onRankup:
+        message: "<#4a4a4a>You achieved Netherite I Rank!"
+        sound: entity.player.levelup
+        particle: FIREWORKS_SPARK
+
+  netherite_ii:
+    points:
+      min: 20000
+      max: 24999
+    prefix: "<#4a4a4a>"
+    suffix: " ⭐⭐<#ffffff>"
+    effects:
+      onKill:
+        particle: SMOKE_NORMAL
+        sound: block.netherite_block.break
+      onWin:
+        message-all: "<#4a4a4a>%player%<white> won!"
+        particle: SMOKE_NORMAL
+        sound: block.netherite_block.break
+      onRankup:
+        message: "<#4a4a4a>You achieved Netherite II Rank!"
+        sound: entity.player.levelup
+        particle: FIREWORKS_SPARK
+
+  netherite_iii:
+    points:
+      min: 25000
+      max: 34999
+    prefix: "<#4a4a4a>"
+    suffix: " ⭐⭐⭐<#ffffff>"
+    effects:
+      onKill:
+        particle: SMOKE_NORMAL
+        sound: block.netherite_block.break
+      onWin:
+        message-all: "<#4a4a4a>%player%<white> won!"
+        particle: SMOKE_NORMAL
+        sound: block.netherite_block.break
+      onRankup:
+        message: "<#4a4a4a>You achieved Netherite III Rank!"
+        sound: entity.player.levelup
+        particle: FIREWORKS_SPARK
+
+  unreal_i:
+    points:
+      min: 35000
+      max: 49999
+    prefix: "<#ff00ff>"
+    suffix: " ⭐<#ffffff>"
+    effects:
+      onKill:
+        particle: PORTAL
+        sound: entity.ender_dragon.growl
+      onWin:
+        message-all: "<#ff00ff>%player%<white> won!"
+        particle: PORTAL
+        sound: entity.ender_dragon.growl
+      onRankup:
+        message: "<#ff00ff>You achieved Unreal I Rank!"
+        sound: entity.player.levelup
+        particle: FIREWORKS_SPARK
+
+  unreal_ii:
+    points:
+      min: 50000
+      max: 74999
+    prefix: "<#ff00ff>"
+    suffix: " ⭐⭐<#ffffff>"
+    effects:
+      onKill:
+        particle: PORTAL
+        sound: entity.ender_dragon.growl
+      onWin:
+        message-all: "<#ff00ff>%player%<white> won!"
+        particle: PORTAL
+        sound: entity.ender_dragon.growl
+      onRankup:
+        message: "<#ff00ff>You achieved Unreal II Rank!"
+        sound: entity.player.levelup
+        particle: FIREWORKS_SPARK
+
+  unreal_iii:
+    points:
+      min: 75000
+      max: 999999999
+    prefix: "<#ff00ff>"
+    suffix: " ⭐⭐⭐<#ffffff>"
+    effects:
+      onKill:
+        particle: PORTAL
+        sound: entity.ender_dragon.growl
+      onWin:
+        message-all: "<#ff00ff>%player%<white> won!"
+        particle: PORTAL
+        sound: entity.ender_dragon.growl
+      onRankup:
+        message: "<#ff00ff>You achieved Unreal III Rank!"
+        sound: entity.player.levelup
+        particle: FIREWORKS_SPARK
+

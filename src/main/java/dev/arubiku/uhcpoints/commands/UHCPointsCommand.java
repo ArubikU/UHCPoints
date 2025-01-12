@@ -37,18 +37,26 @@ public class UHCPointsCommand {
                                 return 1;
                             })
                             .then(Commands.literal("start").executes(context -> {
+                                if (!context.getSource().getSender().hasPermission("uhcpoints.use"))
+                                    return 0;
                                 return startUHC(context.getSource().getSender());
                             }))
                             .then(Commands.literal("end").executes(context -> {
+                                if (!context.getSource().getSender().hasPermission("uhcpoints.use"))
+                                    return 0;
                                 return endUHC(context.getSource().getSender());
                             }))
                             .then(Commands.literal("dump").executes(context -> {
+                                if (!context.getSource().getSender().hasPermission("uhcpoints.use"))
+                                    return 0;
                                 return dumpPoints(context.getSource().getSender());
                             }))
                             .then(Commands.literal("givepoints")
                                     .then(Commands.argument("player", ArgumentTypes.player()))
                                     .then(Commands.argument("points", IntegerArgumentType.integer()))
                                     .executes(context -> {
+                                        if (!context.getSource().getSender().hasPermission("uhcpoints.use"))
+                                            return 0;
                                         plugin.getPointManager().addPoints(
                                                 context.getArgument("player", PlayerSelectorArgumentResolver.class)
                                                         .resolve(context.getSource()).get(0),
@@ -73,8 +81,8 @@ public class UHCPointsCommand {
         List<Player> alivePlayers = Bukkit.getOnlinePlayers().stream()
                 .map(player -> (Player) player)
                 .filter(player -> !player.hasPermission("uhcpoints.bypass"))
-                .sorted((p1, p2) -> plugin.getPointManager().getPlayerPoints(p2.getName())
-                        - plugin.getPointManager().getPlayerPoints(p1.getName()))
+                .sorted((p1, p2) -> plugin.getPointManager().getPlayerPoints(p2.getUniqueId())
+                        - plugin.getPointManager().getPlayerPoints(p1.getUniqueId()))
                 .toList();
 
         if (!alivePlayers.isEmpty()) {

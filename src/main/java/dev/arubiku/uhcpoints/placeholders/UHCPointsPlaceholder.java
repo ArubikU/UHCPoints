@@ -2,8 +2,10 @@ package dev.arubiku.uhcpoints.placeholders;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import dev.arubiku.uhcpoints.UHCPoints;
@@ -38,28 +40,28 @@ public class UHCPointsPlaceholder extends PlaceholderExpansion {
         }
 
         if (identifier.equals("points")) {
-            return String.valueOf(plugin.getPointManager().getPlayerPoints(player.getName()));
+            return String.valueOf(plugin.getPointManager().getPlayerPoints(player.getUniqueId()));
         }
 
         if (identifier.equals("ownplace")) {
-            return String.valueOf(plugin.getPointManager().getPlayerPlace(player.getName()));
+            return String.valueOf(plugin.getPointManager().getPlayerPlace(player.getUniqueId()));
         }
 
         if (identifier.startsWith("place_")) {
             String[] parts = identifier.split("_");
             if (parts.length == 3) {
                 int place = Integer.parseInt(parts[1]);
-                List<Map.Entry<String, Integer>> sortedPlayers = plugin.getPointManager().getPoints().entrySet()
+                List<Map.Entry<UUID, Integer>> sortedPlayers = plugin.getPointManager().getPoints().entrySet()
                         .stream()
-                        .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+                        .sorted(Map.Entry.<UUID, Integer>comparingByValue().reversed())
                         .collect(Collectors.toList());
 
                 if (place <= sortedPlayers.size()) {
-                    Map.Entry<String, Integer> entry = sortedPlayers.get(place - 1);
+                    Map.Entry<UUID, Integer> entry = sortedPlayers.get(place - 1);
                     if (parts[2].equals("points")) {
                         return String.valueOf(entry.getValue());
                     } else if (parts[2].equals("name")) {
-                        return entry.getKey();
+                        return Bukkit.getOfflinePlayer(entry.getKey()).getName();
                     }
                 }
             }

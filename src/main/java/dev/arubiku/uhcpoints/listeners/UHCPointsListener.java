@@ -1,12 +1,20 @@
 package dev.arubiku.uhcpoints.listeners;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 import dev.arubiku.uhcpoints.UHCPoints;
 import dev.arubiku.uhcpoints.api.PointProvider;
@@ -39,6 +47,22 @@ public class UHCPointsListener implements Listener {
         plugin.getPointManager().registerPointProvider(new PointProvider() {
             @Override
             public String getId() {
+                return "first_kill_lobby";
+            }
+
+            @Override
+            public int getPoints(Player player) {
+                return plugin.getPointManager().getConfig().getInt("points.first-kill-lobby", 20);
+            }
+
+            @Override
+            public boolean shouldAwardPoints(Player player) {
+                return !plugin.getPointManager().isFirstKillDone();
+            }
+        });
+        plugin.getPointManager().registerPointProvider(new PointProvider() {
+            @Override
+            public String getId() {
                 return "first_kill";
             }
 
@@ -49,7 +73,7 @@ public class UHCPointsListener implements Listener {
 
             @Override
             public boolean shouldAwardPoints(Player player) {
-                return !plugin.getPointManager().isFirstKillDone();
+                return plugin.getPointManager().isFirstKill(player);
             }
         });
 
@@ -112,7 +136,7 @@ public class UHCPointsListener implements Listener {
 
             @Override
             public int getPoints(Player player) {
-                return plugin.getPointManager().getConfig().getInt("points.first-place", 5);
+                return plugin.getPointManager().getConfig().getInt("points.first-place", 100);
             }
 
             @Override
@@ -129,7 +153,7 @@ public class UHCPointsListener implements Listener {
 
             @Override
             public int getPoints(Player player) {
-                return plugin.getPointManager().getConfig().getInt("points.second-place", 5);
+                return plugin.getPointManager().getConfig().getInt("points.second-place", 60);
             }
 
             @Override
@@ -146,7 +170,7 @@ public class UHCPointsListener implements Listener {
 
             @Override
             public int getPoints(Player player) {
-                return plugin.getPointManager().getConfig().getInt("points.third-place", 5);
+                return plugin.getPointManager().getConfig().getInt("points.third-place", 20);
             }
 
             @Override
@@ -157,18 +181,28 @@ public class UHCPointsListener implements Listener {
     }
 
     @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        plugin.getEffectManager().updatePlayerRank(player);
+    }
+
+    @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
-        Player killer = event.getEntity().getKiller();
+        Player killed = event.getEntity();
+        Player killer = killed.getKiller();
         if (killer != null) {
             if (!plugin.getPointManager().isFirstKillDone()) {
-                plugin.getPointManager().addPoints(killer, "first_kill");
+                plugin.getPointManager().addPoints(killer, "first_kill_lobby");
                 plugin.getPointManager().setFirstKillDone();
-            } else {
-                plugin.getPointManager().addPoints(killer, "kill");
+            } else if (plugin.getPointManager().isFirstKill(killer)) {
+                plugin.getPointManager().addPoints(killer, "first_kill");
             }
+            plugin.getPointManager().addPoints(killer, "kill");
+            plugin.getPointManager().addKill(killer, killed);
+            plugin.getEffectManager().executeRankEffects(killer, "onKill");
         }
 
-        plugin.getPointManager().addLastDead(event.getEntity().getName());
+        plugin.getPointManager().addLastDead(killed.getName());
     }
 
     @EventHandler
@@ -184,4 +218,21 @@ public class UHCPointsListener implements Listener {
             plugin.getPointManager().addPoints(event.getEnchanter(), "high_level_enchant");
         }
     }
+
+    public static Map<UUID, Location> lastBlock = new HashMap<>();
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event) {
+        Player player = event.getPlayer();
+        lastBlock.put(player.getUniqueId(), event.getBlock().getLocation());
+        plugin.getEffectManager().executeRankEffects(player, "mining_effect");
+    }
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+        plugin.getEffectManager().executeRankEffects(player, "aura");
+        plugin.getEffectManager().executeRankEffects(player, "particle_trail");
+    }
+
 }
