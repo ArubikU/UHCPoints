@@ -17,7 +17,10 @@ public class GachaCommand {
 
     public GachaCommand(GachaponManager plugin) {
         this.plugin = plugin;
-        registerCommands();
+        if (plugin.getPlugin().getConfig().getBoolean("options.gacha", true)) {
+
+            registerCommands();
+        }
     }
 
     private void registerCommands() {
@@ -27,7 +30,17 @@ public class GachaCommand {
             final Commands commands = event.registrar();
             commands.register(
                     Commands.literal("gacha")
-                            .then(Commands.literal("spin").executes(this::executeCommand))
+                            .then(Commands.literal("spin").executes((contex) -> {
+
+                                if (contex.getSource().getSender() instanceof Player player) {
+                                    handleSpin(player);
+                                } else {
+
+                                    contex.getSource().getSender().sendMessage(
+                                            plugin.getGachaConfigManager().getMessage("messages.player-only"));
+                                }
+                                return 1;
+                            }))
                             .then(Commands.literal("points").executes(this::executeGachaPoints))
                             .then(Commands.literal("gui").executes(this::executeCommand))
                             .build(),
@@ -68,7 +81,7 @@ public class GachaCommand {
         int cost = plugin.getGachaConfigManager().getCost();
         if (playerData.getPoints() >= cost) {
             playerData.setPoints(playerData.getPoints() - cost);
-            GachaEffect effect = plugin.getGachaManager().spinGacha();
+            GachaEffect effect = plugin.getGachaManager().spinGacha(player);
             playerData.addUnlockedEffect(effect);
             player.sendMessage(plugin.getGachaConfigManager().getMessage("gacha-spin-success")
                     .replaceText(builder -> builder.match("%effect%").replacement(effect.getId())));

@@ -1,7 +1,12 @@
 package dev.arubiku.uhcpoints.gacha;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import org.bukkit.entity.Player;
+
+import dev.arubiku.uhcpoints.gacha.GachaConfigManager.PrizeConfig;
 
 public class GachaManager {
     private final GachaponManager plugin;
@@ -12,20 +17,16 @@ public class GachaManager {
         this.random = new Random();
     }
 
-    public GachaEffect spinGacha() {
+    public GachaEffect spinGacha(Player player) {
         List<GachaConfigManager.PrizeConfig> prizes = plugin.getGachaConfigManager().getPrizes();
-        int totalWeight = prizes.stream().mapToInt(GachaConfigManager.PrizeConfig::getChance).sum();
-        int randomNumber = random.nextInt(totalWeight);
-
-        int currentWeight = 0;
-        for (GachaConfigManager.PrizeConfig prize : prizes) {
-            currentWeight += prize.getChance();
-            if (randomNumber < currentWeight) {
-                return GachaEffect.getById(prize.getId());
+        List<GachaEffect> prices = new ArrayList<>();
+        for (PrizeConfig conf : prizes) {
+            if (!plugin.getGachaDataManager().getPlayerData(player).getUnlockedEffects().contains(conf.getId())) {
+                for (int i = 0; i < conf.getChance(); i++) {
+                    prices.add(GachaEffect.getById(conf.getId()));
+                }
             }
         }
-
-        // Fallback to first prize if something goes wrong
-        return GachaEffect.getById(prizes.get(0).getId());
+        return prices.get(random.nextInt(prices.size()));
     }
 }

@@ -14,6 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import dev.arubiku.uhcpoints.gacha.GachaDataManager.GachaPlayerData;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 
 public class GachaGui {
@@ -61,7 +62,8 @@ public class GachaGui {
         meta.displayName(Component.text(guiItem.getName()).decoration(TextDecoration.ITALIC, false));
         List<Component> lore = new ArrayList<>();
         for (String loreLine : guiItem.getLore()) {
-            lore.add(Component.text(loreLine).decoration(TextDecoration.ITALIC, false));
+            lore.add(Component.text(loreLine.replace("${points}", plugin.getGachaConfigManager().getCost() + ""))
+                    .decoration(TextDecoration.ITALIC, false).colorIfAbsent(TextColor.color(255, 0, 0)));
         }
         meta.lore(lore);
         item.setItemMeta(meta);
