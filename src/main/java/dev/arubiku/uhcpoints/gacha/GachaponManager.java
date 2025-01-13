@@ -13,11 +13,11 @@ public class GachaponManager {
     private UHCPoints plugin;
 
     public void onEnable(UHCPoints plugin) {
+        this.plugin = plugin;
         // Inicializar managers
         this.gachaConfigManager = new GachaConfigManager(this);
         this.gachaDataManager = new GachaDataManager(this);
         this.gachaGUI = new GachaGui(this);
-        this.plugin = plugin;
         this.gachaManager = new GachaManager(this);
         this.command = new GachaCommand(this);
         // Cargar configuración

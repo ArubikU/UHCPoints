@@ -53,6 +53,9 @@ bukkitPluginYaml {
             description = "UHC Points main command"
             permission = "uhcpoints.use"
         }
+        register("gacha") {
+            description = "Gacha Points main command"
+        }
     }
     permissions {
         register("uhcpoints.use") {

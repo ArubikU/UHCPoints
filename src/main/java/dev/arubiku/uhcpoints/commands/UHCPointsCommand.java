@@ -129,39 +129,48 @@ public class UHCPointsCommand {
                                 return dumpPoints(context.getSource().getSender());
                             }))
                             .then(Commands.literal("givepoints")
-                                    .then(Commands.argument("player", ArgumentTypes.player()))
-                                    .then(Commands.argument("points", ArgumentTypes.integerRange()))
-                                    .executes(context -> {
-                                        if (!context.getSource().getSender().hasPermission("uhcpoints.use")
-                                                && !(context.getSource().getSender() instanceof ConsoleCommandSender))
-                                            return 0;
-                                        Player player = context
-                                                .getArgument("player", PlayerSelectorArgumentResolver.class)
-                                                .resolve(context.getSource()).get(0);
-                                        Integer points = context.getArgument("points", IntegerRangeProvider.class)
-                                                .range().lowerEndpoint();
-                                        plugin.getPointManager().addPoints(
-                                                player, points);
+                                    .then(Commands.argument("player", ArgumentTypes.player()).then(
 
-                                        return 1;
-                                    }))
+                                            Commands.argument("points", ArgumentTypes.integerRange())
+                                                    .executes(context -> {
+                                                        if (!context.getSource().getSender()
+                                                                .hasPermission("uhcpoints.use")
+                                                                && !(context.getSource()
+                                                                        .getSender() instanceof ConsoleCommandSender))
+                                                            return 0;
+                                                        Player player = context
+                                                                .getArgument("player",
+                                                                        PlayerSelectorArgumentResolver.class)
+                                                                .resolve(context.getSource()).get(0);
+                                                        Integer points = context
+                                                                .getArgument("points", IntegerRangeProvider.class)
+                                                                .range().lowerEndpoint();
+                                                        plugin.getPointManager().addPoints(
+                                                                player, points);
+
+                                                        return 1;
+                                                    }))))
                             .then(Commands.literal("setPoints")
-                                    .then(Commands.argument("player", ArgumentTypes.player()))
-                                    .then(Commands.argument("points", ArgumentTypes.integerRange()))
-                                    .executes(context -> {
-                                        if (!context.getSource().getSender().hasPermission("uhcpoints.use")
-                                                && !(context.getSource().getSender() instanceof ConsoleCommandSender))
-                                            return 0;
-                                        Player player = context
-                                                .getArgument("player", PlayerSelectorArgumentResolver.class)
-                                                .resolve(context.getSource()).get(0);
-                                        Integer points = context.getArgument("points", IntegerRangeProvider.class)
-                                                .range().lowerEndpoint();
-                                        plugin.getPointManager().addPoints(
-                                                player, points);
+                                    .then(Commands.argument("player", ArgumentTypes.player())
+                                            .then(Commands.argument("points", ArgumentTypes.integerRange())
+                                                    .executes(context -> {
+                                                        if (!context.getSource().getSender()
+                                                                .hasPermission("uhcpoints.use")
+                                                                && !(context.getSource()
+                                                                        .getSender() instanceof ConsoleCommandSender))
+                                                            return 0;
+                                                        Player player = context
+                                                                .getArgument("player",
+                                                                        PlayerSelectorArgumentResolver.class)
+                                                                .resolve(context.getSource()).get(0);
+                                                        Integer points = context
+                                                                .getArgument("points", IntegerRangeProvider.class)
+                                                                .range().lowerEndpoint();
+                                                        plugin.getPointManager().addPoints(
+                                                                player, points);
 
-                                        return 1;
-                                    }))
+                                                        return 1;
+                                                    }))))
                             .build(),
                     "UHC Points commands",
                     List.of("uhcp"));

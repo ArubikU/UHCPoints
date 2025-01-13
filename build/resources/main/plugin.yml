@@ -6,6 +6,8 @@ description: A Minecraft plugin for UHC points management
 authors:
 - ArubikU
 commands:
+    gacha:
+        description: Gacha Points main command
     uhcpoints:
         description: UHC Points main command
         permission: uhcpoints.use
