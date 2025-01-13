@@ -4,11 +4,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.function.BiConsumer;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
@@ -17,14 +18,17 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import dev.arubiku.uhcpoints.UHCPoints;
 import dev.arubiku.uhcpoints.listeners.UHCPointsListener;
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public class EffectManager {
     private static UHCPoints plugin;
-    private final Map<UUID, String> playerRanks = new HashMap<>();
-    public static final Set<UUID> trail = new HashSet<>();
-    public static final Set<UUID> aura = new HashSet<>();
+    private final Map<String, String> playerRanks = new HashMap<>();
+    public static final Set<String> trail = new HashSet<>();
+    public static final Set<String> aura = new HashSet<>();
 
     public EffectManager(UHCPoints plugin) {
         EffectManager.plugin = plugin;
@@ -33,9 +37,9 @@ public class EffectManager {
     public enum Effect {
         MESSAGE("message", (player, data) -> {
             Component comp = MiniMessage.miniMessage().deserialize(data);
-            if (plugin.getPointManager().playerKills.containsKey(player.getUniqueId())) {
+            if (plugin.getPointManager().playerKills.containsKey(player.getName())) {
                 data.replace("%killed%", UHCPoints.getPlugin(UHCPoints.class).getPointManager().playerKills
-                        .get(player.getUniqueId()).getLast());
+                        .get(player.getName()).getLast());
             }
             comp = comp.replaceText(builder -> builder.match("%player%").replacement(player.getName()));
             player.sendMessage(comp);
@@ -51,25 +55,47 @@ public class EffectManager {
                 String[] parts = data.split(":");
                 Particle particle = Particle.valueOf(parts[0].toUpperCase());
                 int count = parts.length > 1 ? Integer.parseInt(parts[1]) : 50;
-                player.getWorld().spawnParticle(particle, player.getLocation(), count);
-            } catch (IllegalArgumentException e) {
+                if (particle.getDataType() == Material.class) {
+                    Material mat = Material.valueOf(parts.length > 2 ? parts[2] : "STONE");
+
+                    player.getWorld().spawnParticle(particle, player.getLocation(), count,
+                            mat);
+
+                } else if (particle.getDataType() == Color.class) {
+
+                    int r = parts.length > 2 ? Integer.parseInt(parts[2]) : 50;
+                    int g = parts.length > 3 ? Integer.parseInt(parts[3]) : 50;
+                    int b = parts.length > 4 ? Integer.parseInt(parts[4]) : 50;
+                    Color color = Color.fromRGB(r, g, b);
+
+                    player.getWorld().spawnParticle(particle, player.getLocation(), count,
+                            color);
+
+                } else {
+
+                    player.getWorld().spawnParticle(particle, player.getLocation(), count);
+                }
+            } catch (Throwable e) {
                 plugin.getLogger().warning("Invalid particle type: " + data);
             }
         }),
         SOUND("sound", (player, data) -> {
             try {
                 String[] parts = data.split(":");
-                Sound sound = Sound.valueOf(parts[0].toUpperCase());
+                Sound sound = RegistryAccess.registryAccess().getRegistry(RegistryKey.SOUND_EVENT)
+                        .get(Key.key(parts[0].toUpperCase()));
+                if (sound == null)
+                    return;
                 float volume = parts.length > 1 ? Float.parseFloat(parts[1]) : 1.0f;
                 float pitch = parts.length > 2 ? Float.parseFloat(parts[2]) : 1.0f;
                 player.playSound(player.getLocation(), sound, volume, pitch);
-            } catch (IllegalArgumentException e) {
+            } catch (Throwable e) {
                 plugin.getLogger().warning("Invalid sound: " + data);
             }
         }),
         PARTICLE_TRAIL("particle_trail", (player, data) -> {
             try {
-                if (EffectManager.trail.contains(player.getUniqueId()))
+                if (EffectManager.trail.contains(player.getName()))
                     return;
                 String[] parts = data.split(":");
                 Particle particle = Particle.valueOf(parts[0].toUpperCase());
@@ -81,15 +107,15 @@ public class EffectManager {
                     public void run() {
                         if (ticks >= duration || !player.isOnline()) {
                             this.cancel();
-                            EffectManager.trail.remove(player.getUniqueId());
+                            EffectManager.trail.remove(player.getName());
                             return;
                         }
                         player.getWorld().spawnParticle(particle, player.getLocation(), 1, 0, 0, 0, 0);
                         ticks++;
                     }
                 }.runTaskTimer(plugin, 0L, 1L);
-                EffectManager.trail.add(player.getUniqueId());
-            } catch (IllegalArgumentException e) {
+                EffectManager.trail.add(player.getName());
+            } catch (Throwable e) {
                 plugin.getLogger().warning("Invalid particle trail: " + data);
             }
         }),
@@ -97,24 +123,27 @@ public class EffectManager {
             try {
                 String[] parts = data.split(":");
                 Particle particle = Particle.valueOf(parts[0].toUpperCase());
-                if (UHCPointsListener.lastBlock.containsKey(player.getUniqueId())) {
-                    Location loc = UHCPointsListener.lastBlock.get(player.getUniqueId());
+                if (UHCPointsListener.lastBlock.containsKey(player.getName())) {
+                    Location loc = UHCPointsListener.lastBlock.get(player.getName());
                     loc.getWorld().spawnParticle(particle, loc, 50);
                 }
                 if (parts.length > 1) {
 
-                    Sound sound = Sound.valueOf(parts[1].toUpperCase());
+                    Sound sound = RegistryAccess.registryAccess().getRegistry(RegistryKey.SOUND_EVENT)
+                            .get(Key.key(parts[1].toUpperCase()));
+                    if (sound == null)
+                        return;
                     float volume = parts.length > 2 ? Float.parseFloat(parts[2]) : 1.0f;
                     float pitch = parts.length > 3 ? Float.parseFloat(parts[3]) : 1.0f;
                     player.playSound(player.getLocation(), sound, volume, pitch);
                 }
-            } catch (IllegalArgumentException e) {
+            } catch (Throwable e) {
                 plugin.getLogger().warning("Invalid mining effect: " + data);
             }
         }),
         AURA("aura", (player, data) -> {
             try {
-                if (EffectManager.aura.contains(player.getUniqueId()))
+                if (EffectManager.aura.contains(player.getName()))
                     return;
                 String[] parts = data.split(":");
                 Particle particle = Particle.valueOf(parts[0].toUpperCase());
@@ -126,7 +155,7 @@ public class EffectManager {
                     public void run() {
                         if (!player.isOnline()) {
                             this.cancel();
-                            EffectManager.aura.remove(player.getUniqueId());
+                            EffectManager.aura.remove(player.getName());
                             return;
                         }
                         Location loc = player.getLocation();
@@ -141,10 +170,10 @@ public class EffectManager {
                     }
                 }.runTaskTimer(plugin, 0L, 5L);
 
-                EffectManager.aura.add(player.getUniqueId());
+                EffectManager.aura.add(player.getName());
             } catch (
 
-        IllegalArgumentException e) {
+        Throwable e) {
                 plugin.getLogger().warning("Invalid aura effect: " + data);
             }
         });
@@ -161,7 +190,7 @@ public class EffectManager {
 
     public void executeEffect(Player player, String effectKey, String data) {
         for (Effect effect : Effect.values()) {
-            if (effect.key.equals(effectKey)) {
+            if (effect.key.equalsIgnoreCase(effectKey)) {
                 effect.executor.accept(player, data);
                 break;
             }
@@ -169,7 +198,7 @@ public class EffectManager {
     }
 
     public void updatePlayerRank(Player player) {
-        int points = plugin.getPointManager().getPlayerPoints(player.getUniqueId());
+        int points = plugin.getPointManager().getRecordPoints(player.getName());
         String newRank = "none";
 
         ConfigurationSection ranksSection = plugin.getConfig().getConfigurationSection("ranks");
@@ -185,15 +214,15 @@ public class EffectManager {
             }
         }
 
-        String oldRank = playerRanks.get(player.getUniqueId());
+        String oldRank = playerRanks.get(player.getName());
         if (oldRank == null || !oldRank.equals(newRank)) {
-            playerRanks.put(player.getUniqueId(), newRank);
+            playerRanks.put(player.getName(), newRank);
             executeRankEffects(player, "onRankup");
         }
     }
 
     public void executeRankEffects(Player player, String trigger) {
-        String rank = playerRanks.get(player.getUniqueId());
+        String rank = playerRanks.get(player.getName());
         if (rank == null)
             return;
 
@@ -207,7 +236,11 @@ public class EffectManager {
     }
 
     public String getPlayerRank(Player player) {
-        return playerRanks.getOrDefault(player.getUniqueId(), "none");
+        return playerRanks.getOrDefault(player.getName(), "none");
+    }
+
+    public String getPlayerRank(String player) {
+        return playerRanks.getOrDefault(player, "none");
     }
 
     public void loadPlayerRanks() {
@@ -217,7 +250,7 @@ public class EffectManager {
     }
 
     public void savePlayerRanks() {
-        for (Map.Entry<UUID, String> entry : playerRanks.entrySet()) {
+        for (Map.Entry<String, String> entry : playerRanks.entrySet()) {
             plugin.getPointManager().setPlayerRank(entry.getKey(), entry.getValue());
         }
     }

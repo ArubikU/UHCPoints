@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import dev.arubiku.uhcpoints.commands.UHCPointsCommand;
 import dev.arubiku.uhcpoints.effects.EffectManager;
+import dev.arubiku.uhcpoints.gacha.GachaponManager;
 import dev.arubiku.uhcpoints.listeners.ChatListener;
 import dev.arubiku.uhcpoints.listeners.UHCPointsListener;
 import dev.arubiku.uhcpoints.managers.PointManager;
@@ -15,6 +16,8 @@ public class UHCPoints extends JavaPlugin {
     private PointManager pointManager;
     private UHCPointsCommand uhcPointsCommand;
     public static MiniMessage miniMessage;
+
+    public GachaponManager gacha;
     private EffectManager effectManager;
 
     @Override
@@ -32,7 +35,9 @@ public class UHCPoints extends JavaPlugin {
         }
 
         effectManager.loadPlayerRanks();
-        pointManager.loadRecord();
+
+        this.gacha = new GachaponManager();
+        gacha.onEnable(this);
         getLogger().info("UHCPoints has been enabled!");
     }
 
@@ -41,7 +46,12 @@ public class UHCPoints extends JavaPlugin {
         effectManager.savePlayerRanks();
         pointManager.dumpPoints();
         pointManager.saveRecord();
+        gacha.onDisable();
         getLogger().info("UHCPoints has been disabled!");
+    }
+
+    public GachaponManager getGachaponManager() {
+        return gacha;
     }
 
     public EffectManager getEffectManager() {

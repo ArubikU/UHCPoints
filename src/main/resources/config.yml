@@ -1,3 +1,8 @@
+options:
+  prefixprefix: "<hover:show_text:'Click to teleport'><click:run_command:'/teleport %player%'"
+  prefixsuffix: "</click></hover>"
+  dead-can-talks-live: false
+
 points:
   first-kill: 50
   first-kill-lobby: 20
@@ -11,7 +16,7 @@ points:
 
 messages:
   points-earned: "<green>You earned <points> points! Total: <total>"
-  usage: "<yellow>Usage: /uhcpoints <start|end|dump>"
+  usage: "<yellow>Usage: /uhcpoints <start|end|dump|points>"
   uhc-started: "<green>UHC started. All players received 10 points."
   uhc-ended: "<green>UHC ended. Top players received bonus points."
   points-dumped: "<green>Points dumped to points.yml"
@@ -21,8 +26,9 @@ ranks:
     points:
       min: 0
       max: 49
-    prefix: "<gray>"
+    prefix: ""
     suffix: ""
+    placeholder: ""
     effects:
       onWin:
         message-all: "<gray>%player% won!"
@@ -32,10 +38,11 @@ ranks:
       min: 50
       max: 149
     prefix: "<#b87333>"
-    suffix: " ⭐<#ffffff>"
+    suffix: " <#FFFF00>⭐<white>"
+    placeholder: <#b87333>Copper <#FFFF00>⭐
     effects:
       onKill:
-        particle: REDSTONE
+        particle: DUST:50:200:0:0
         sound: block.copper.break
       onWin:
         message-all: "<#b87333>%player%<white> won!"
@@ -47,14 +54,15 @@ ranks:
       min: 150
       max: 299
     prefix: "<#b87333>"
-    suffix: " ⭐⭐<#ffffff>"
+    suffix: " <#FFFF00>⭐⭐<white>"
+    placeholder: <#b87333>Copper <#FFFF00>⭐⭐
     effects:
       onKill:
-        particle: REDSTONE
+        particle: DUST:50:200:0:0
         sound: block.copper.break
       onWin:
         message-all: "<#b87333>%player%<white> won!"
-        particle: REDSTONE
+        particle: DUST:50:200:0:0
       onRankup:
         message: "<#b87333>You achieved Copper II Rank!"
         sound: block.copper.break
@@ -64,14 +72,15 @@ ranks:
       min: 300
       max: 499
     prefix: "<#b87333>"
-    suffix: " ⭐⭐⭐<#ffffff>"
+    suffix: " <#FFFF00>⭐⭐⭐<white>"
+    placeholder: <#b87333>Copper <#FFFF00>⭐⭐⭐
     effects:
       onKill:
-        particle: REDSTONE
+        particle: DUST:50:200:0:0
         sound: block.copper.break
       onWin:
         message-all: "<#b87333>%player%<white> won!"
-        particle: REDSTONE
+        particle: DUST:50:200:0:0
         sound: block.copper.break
       onRankup:
         message: "<#b87333>You achieved Copper III Rank!"
@@ -82,16 +91,15 @@ ranks:
       min: 500
       max: 749
     prefix: "<#c0c0c0>"
-    suffix: " ⭐<#ffffff>"
+    suffix: " <#FFFF00>⭐<white>"
+    placeholder: <#c0c0c0>Iron <#FFFF00>⭐
     effects:
       onKill:
-        particle: BLOCK_CRACK
-        block: iron_block
+        particle: BLOCK:50:iron_block
         sound: block.iron_block.break
       onWin:
         message-all: "<#c0c0c0>%player%<white> won!"
-        particle: BLOCK_CRACK
-        block: iron_block
+        particle: BLOCK:50:iron_block
       onRankup:
         message: "<#c0c0c0>You achieved Iron I Rank!"
         sound: entity.player.levelup
@@ -101,16 +109,15 @@ ranks:
       min: 750
       max: 999
     prefix: "<#c0c0c0>"
-    suffix: " ⭐⭐<#ffffff>"
+    suffix: " <#FFFF00>⭐⭐<white>"
+    placeholder: <#c0c0c0>Iron <#FFFF00>⭐⭐
     effects:
       onKill:
-        particle: BLOCK_CRACK
-        block: iron_block
+        particle: BLOCK:50:iron_block
         sound: block.iron_block.break
       onWin:
         message-all: "<#c0c0c0>%player%<white> won!"
-        particle: BLOCK_CRACK
-        block: iron_block
+        particle: BLOCK:50:iron_block
         sound: block.iron_block.break
       onRankup:
         message: "<#c0c0c0>You achieved Iron II Rank!"
@@ -121,16 +128,15 @@ ranks:
       min: 1000
       max: 1499
     prefix: "<#c0c0c0>"
-    suffix: " ⭐⭐⭐<#ffffff>"
+    suffix: " <#FFFF00>⭐⭐⭐<white>"
+    placeholder: <#c0c0c0>Iron <#FFFF00>⭐⭐⭐
     effects:
       onKill:
-        particle: BLOCK_CRACK
-        block: iron_block
+        particle: BLOCK:50:iron_block
         sound: block.iron_block.break
       onWin:
         message-all: "<#c0c0c0>%player%<white> won!"
-        particle: BLOCK_CRACK
-        block: iron_block
+        particle: BLOCK:50:iron_block
         sound: block.iron_block.break
       onRankup:
         message: "<#c0c0c0>You achieved Iron III Rank!"
@@ -142,16 +148,15 @@ ranks:
       min: 1500
       max: 1999
     prefix: "<#ffd700>"
-    suffix: " ⭐<#ffffff>"
+    suffix: " <#FFFF00>⭐<white>"
+    placeholder: <#ffd700>Gold <#FFFF00>⭐
     effects:
       onKill:
-        particle: BLOCK_CRACK
-        block: gold_block
+        particle: BLOCK:50:gold_block
         sound: block.gold_block.break
       onWin:
         message-all: "<#ffd700>%player%<white> won!"
-        particle: BLOCK_CRACK
-        block: gold_block
+        particle: BLOCK:50:gold_block
         sound: block.gold_block.break
       onRankup:
         message: "<#ffd700>You achieved Gold I Rank!"
@@ -163,16 +168,15 @@ ranks:
       min: 2000
       max: 2499
     prefix: "<#ffd700>"
-    suffix: " ⭐⭐<#ffffff>"
+    suffix: " <#FFFF00>⭐⭐<white>"
+    placeholder: <#ffd700>Gold <#FFFF00>⭐⭐
     effects:
       onKill:
-        particle: BLOCK_CRACK
-        block: gold_block
+        particle: BLOCK:50:gold_block
         sound: block.gold_block.break
       onWin:
         message-all: "<#ffd700>%player%<white> won!"
-        particle: BLOCK_CRACK
-        block: gold_block
+        particle: BLOCK:50:gold_block
         sound: block.gold_block.break
       onRankup:
         message: "<#ffd700>You achieved Gold II Rank!"
@@ -184,16 +188,15 @@ ranks:
       min: 2500
       max: 3499
     prefix: "<#ffd700>"
-    suffix: " ⭐⭐⭐<#ffffff>"
+    suffix: " <#FFFF00>⭐⭐⭐<white>"
+    placeholder: <#ffd700>Gold <#FFFF00>⭐⭐⭐
     effects:
       onKill:
-        particle: BLOCK_CRACK
-        block: gold_block
+        particle: BLOCK:50:gold_block
         sound: block.gold_block.break
       onWin:
         message-all: "<#ffd700>%player%<white> won!"
-        particle: BLOCK_CRACK
-        block: gold_block
+        particle: BLOCK:50:gold_block
         sound: block.gold_block.break
       onRankup:
         message: "<#ffd700>You achieved Gold III Rank!"
@@ -205,16 +208,15 @@ ranks:
       min: 3500
       max: 4499
     prefix: "<#4169e1>"
-    suffix: " ⭐<#ffffff>"
+    suffix: " <#FFFF00>⭐<white>"
+    placeholder: <#4169e1>Diamond <#FFFF00>⭐
     effects:
       onKill:
-        particle: BLOCK_CRACK
-        block: diamond_block
+        particle: BLOCK:50:diamond_block
         sound: block.diamond_block.break
       onWin:
         message-all: "<#4169e1>%player%<white> won!"
-        particle: BLOCK_CRACK
-        block: diamond_block
+        particle: BLOCK:50:diamond_block
         sound: block.diamond_block.break
       onRankup:
         message: "<#4169e1>You achieved Diamond I Rank!"
@@ -226,16 +228,15 @@ ranks:
       min: 4500
       max: 5499
     prefix: "<#4169e1>"
-    suffix: " ⭐⭐<#ffffff>"
+    suffix: " <#FFFF00>⭐⭐<white>"
+    placeholder: <#4169e1>Diamond <#FFFF00>⭐⭐
     effects:
       onKill:
-        particle: BLOCK_CRACK
-        block: diamond_block
+        particle: BLOCK:50:diamond_block
         sound: block.diamond_block.break
       onWin:
         message-all: "<#4169e1>%player%<white> won!"
-        particle: BLOCK_CRACK
-        block: diamond_block
+        particle: BLOCK:50:diamond_block
         sound: block.diamond_block.break
       onRankup:
         message: "<#4169e1>You achieved Diamond II Rank!"
@@ -247,11 +248,11 @@ ranks:
       min: 5500
       max: 7499
     prefix: "<#4169e1>"
-    suffix: " ⭐⭐⭐<#ffffff>"
+    suffix: " <#FFFF00>⭐⭐⭐<white>"
+    placeholder: <#4169e1>Diamond <#FFFF00>⭐⭐⭐
     effects:
       onKill:
-        particle: BLOCK_CRACK
-        block: diamond_block
+        particle: BLOCK:50:diamond_block
         sound: block.diamond_block
 
   emerald_i:
@@ -259,7 +260,8 @@ ranks:
       min: 7500
       max: 9499
     prefix: "<#50c878>"
-    suffix: " ⭐<#ffffff>"
+    suffix: " <#FFFF00>⭐<white>"
+    placeholder: <#50c878>Emerald <#FFFF00>⭐
     effects:
       onKill:
         particle: EMERALD_BLOCK
@@ -278,7 +280,8 @@ ranks:
       min: 9500
       max: 11499
     prefix: "<#50c878>"
-    suffix: " ⭐⭐<#ffffff>"
+    suffix: " <#FFFF00>⭐⭐<white>"
+    placeholder: <#50c878>Emerald <#FFFF00>⭐⭐
     effects:
       onKill:
         particle: EMERALD_BLOCK
@@ -297,7 +300,8 @@ ranks:
       min: 11500
       max: 14999
     prefix: "<#50c878>"
-    suffix: " ⭐⭐⭐<#ffffff>"
+    suffix: " <#FFFF00>⭐⭐⭐<white>"
+    placeholder: <#50c878>Emerald <#FFFF00>⭐⭐⭐
     effects:
       onKill:
         particle: EMERALD_BLOCK
@@ -316,7 +320,8 @@ ranks:
       min: 15000
       max: 19999
     prefix: "<#4a4a4a>"
-    suffix: " ⭐<#ffffff>"
+    suffix: " <#FFFF00>⭐<white>"
+    placeholder: <#4a4a4a>Netherite <#FFFF00>⭐
     effects:
       onKill:
         particle: SMOKE_NORMAL
@@ -335,7 +340,8 @@ ranks:
       min: 20000
       max: 24999
     prefix: "<#4a4a4a>"
-    suffix: " ⭐⭐<#ffffff>"
+    suffix: " <#FFFF00>⭐⭐<white>"
+    placeholder: <#4a4a4a>Netherite <#FFFF00>⭐⭐
     effects:
       onKill:
         particle: SMOKE_NORMAL
@@ -354,7 +360,8 @@ ranks:
       min: 25000
       max: 34999
     prefix: "<#4a4a4a>"
-    suffix: " ⭐⭐⭐<#ffffff>"
+    suffix: " <#FFFF00>⭐⭐⭐<white>"
+    placeholder: <#4a4a4a>Netherite <#FFFF00>⭐⭐⭐
     effects:
       onKill:
         particle: SMOKE_NORMAL
@@ -373,7 +380,8 @@ ranks:
       min: 35000
       max: 49999
     prefix: "<#ff00ff>"
-    suffix: " ⭐<#ffffff>"
+    suffix: " <#FFFF00>⭐<white>"
+    placeholder: <#ff00ff>Unreal <#FFFF00>⭐
     effects:
       onKill:
         particle: PORTAL
@@ -392,7 +400,8 @@ ranks:
       min: 50000
       max: 74999
     prefix: "<#ff00ff>"
-    suffix: " ⭐⭐<#ffffff>"
+    suffix: " <#FFFF00>⭐⭐<white>"
+    placeholder: <#ff00ff>Unreal <#FFFF00>⭐⭐
     effects:
       onKill:
         particle: PORTAL
@@ -411,7 +420,8 @@ ranks:
       min: 75000
       max: 999999999
     prefix: "<#ff00ff>"
-    suffix: " ⭐⭐⭐<#ffffff>"
+    suffix: " <#FFFF00>⭐⭐⭐<white>"
+    placeholder: <#ff00ff>Unreal <#FFFF00>⭐⭐⭐
     effects:
       onKill:
         particle: PORTAL

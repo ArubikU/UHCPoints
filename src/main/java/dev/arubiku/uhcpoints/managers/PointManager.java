@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -20,11 +20,11 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public class PointManager {
     private final UHCPoints plugin;
-    private final Map<UUID, Integer> playerPoints = new HashMap<>();
-    private final Map<UUID, String> playerRanks = new HashMap<>();
+    public final Map<String, Integer> playerPoints = new HashMap<>();
+    private final Map<String, String> playerRanks = new HashMap<>();
     private final List<String> lastTwoDead = new ArrayList<>();
     private boolean firstKillDone = false;
-    public final Map<UUID, List<String>> playerKills = new HashMap<>();
+    public final Map<String, List<String>> playerKills = new HashMap<>();
     private final List<PointProvider> pointProviders = new ArrayList<>();
     private final FileConfiguration config;
     private final MiniMessage miniMessage = MiniMessage.miniMessage();
@@ -46,11 +46,11 @@ public class PointManager {
     }
 
     public boolean isFirstKill(Player player) {
-        return !this.playerKills.containsKey(player.getUniqueId());
+        return !this.playerKills.containsKey(player.getName());
     }
 
     public void addKill(Player player, Player dead) {
-        this.playerKills.computeIfAbsent(player.getUniqueId(), k -> new ArrayList<>()).add(dead.getName());
+        this.playerKills.computeIfAbsent(player.getName(), k -> new ArrayList<>()).add(dead.getName());
     }
 
     public void registerPointProvider(PointProvider provider) {
@@ -73,9 +73,13 @@ public class PointManager {
         if (pointsToAdd == 0)
             return;
 
-        UUID playerId = player.getUniqueId();
+        String playerId = player.getName();
         int currentPoints = playerPoints.getOrDefault(playerId, 0);
         playerPoints.put(playerId, currentPoints + pointsToAdd);
+
+        int recordPointsC = recordPoints.getOrDefault(playerId, 0);
+        recordPoints.put(playerId, recordPointsC + pointsToAdd);
+        plugin.getGachaponManager().getGachaDataManager().addPoints(player, pointsToAdd);
 
         String message = config.getString("messages.points-earned",
                 "<green>You earned <points> points! Total: <total>");
@@ -87,17 +91,37 @@ public class PointManager {
         plugin.getEffectManager().updatePlayerRank(player);
     }
 
-    public Map<UUID, Integer> getPoints() {
+    public void setPoints(Player player, int pointsToSet) {
+
+        String playerId = player.getName();
+        playerPoints.put(playerId, pointsToSet);
+        recordPoints.put(playerId, pointsToSet);
+
+        String message = config.getString("messages.points-set",
+                "<green>Your points setted to <points> points! Total: <total>");
+        Component component = miniMessage.deserialize(message
+                .replace("<points>", String.valueOf(pointsToSet))
+                .replace("<total>", String.valueOf(playerPoints.get(playerId))));
+        player.sendMessage(component);
+        plugin.getGachaponManager().getGachaDataManager().setPoints(player, pointsToSet);
+        plugin.getEffectManager().updatePlayerRank(player);
+    }
+
+    public Map<String, Integer> getPoints() {
         return playerPoints;
     }
 
-    public int getPlayerPoints(UUID playerId) {
+    public int getPlayerPoints(String playerId) {
         return playerPoints.getOrDefault(playerId, 0);
     }
 
-    public int getPlayerPlace(UUID playerId) {
-        List<Map.Entry<UUID, Integer>> sortedPlayers = playerPoints.entrySet().stream()
-                .sorted(Map.Entry.<UUID, Integer>comparingByValue().reversed())
+    public int getRecordPoints(String playerId) {
+        return recordPoints.getOrDefault(playerId, 0);
+    }
+
+    public int getPlayerPlace(String playerId) {
+        List<Map.Entry<String, Integer>> sortedPlayers = playerPoints.entrySet().stream()
+                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
                 .collect(Collectors.toList());
 
         for (int i = 0; i < sortedPlayers.size(); i++) {
@@ -135,17 +159,19 @@ public class PointManager {
         File file = new File(plugin.getDataFolder(), "points.yml");
         YamlConfiguration pointsConfig = new YamlConfiguration();
 
-        pointsConfig.createSection("Puntajes", playerPoints.entrySet().stream()
-                .collect(Collectors.toMap(e -> e.getKey().toString(), Map.Entry::getValue)));
+        pointsConfig.createSection("Puntajes");
+        playerPoints.forEach((uuid, value) -> {
+            pointsConfig.set("Puntajes." + Bukkit.getOfflinePlayer(uuid).getName(), value);
+        });
 
         pointsConfig.createSection("Top");
-        List<Map.Entry<UUID, Integer>> sortedPlayers = playerPoints.entrySet().stream()
-                .sorted(Map.Entry.<UUID, Integer>comparingByValue().reversed())
+        List<Map.Entry<String, Integer>> sortedPlayers = playerPoints.entrySet().stream()
+                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
                 .limit(10)
                 .collect(Collectors.toList());
 
         for (int i = 0; i < sortedPlayers.size(); i++) {
-            pointsConfig.set("Top." + (i + 1), sortedPlayers.get(i).getKey().toString());
+            pointsConfig.set("Top." + (i + 1), Bukkit.getOfflinePlayer(sortedPlayers.get(i).getKey()).getName());
         }
 
         try {
@@ -155,24 +181,31 @@ public class PointManager {
         }
     }
 
+    public static Map<String, Integer> recordPoints = new HashMap<>();
+
+    public static Map<String, Integer> getRecordPoints() {
+        return recordPoints;
+    }
+
     public void loadRecord() {
         if (recordFile.exists()) {
             YamlConfiguration record = YamlConfiguration.loadConfiguration(recordFile);
             for (String key : record.getConfigurationSection("Points").getKeys(false)) {
-                UUID uuid = UUID.fromString(key);
-                playerPoints.put(uuid, record.getInt("Points." + key));
+                recordPoints.put(key, record.getInt("Points." + key));
             }
             for (String key : record.getConfigurationSection("Ranks").getKeys(false)) {
-                UUID uuid = UUID.fromString(key);
-                playerRanks.put(uuid, record.getString("Ranks." + key));
+                playerRanks.put(key, record.getString("Ranks." + key));
             }
         }
     }
 
     public void saveRecord() {
         YamlConfiguration record = new YamlConfiguration();
-        record.createSection("Points", playerPoints.entrySet().stream()
-                .collect(Collectors.toMap(e -> e.getKey().toString(), Map.Entry::getValue)));
+        if (!record.contains("Points"))
+            record.createSection("Points");
+        recordPoints.forEach((name, points) -> {
+            record.set("Points." + name, points);
+        });
         record.createSection("Ranks", playerRanks.entrySet().stream()
                 .collect(Collectors.toMap(e -> e.getKey().toString(), Map.Entry::getValue)));
         try {
@@ -182,11 +215,11 @@ public class PointManager {
         }
     }
 
-    public void setPlayerRank(UUID playerId, String rank) {
+    public void setPlayerRank(String playerId, String rank) {
         playerRanks.put(playerId, rank);
     }
 
-    public String getPlayerRank(UUID playerId) {
+    public String getPlayerRank(String playerId) {
         return playerRanks.getOrDefault(playerId, "none");
     }
 

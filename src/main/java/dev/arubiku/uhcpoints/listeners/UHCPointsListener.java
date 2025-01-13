@@ -1,8 +1,9 @@
 package dev.arubiku.uhcpoints.listeners;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -186,45 +187,55 @@ public class UHCPointsListener implements Listener {
         plugin.getEffectManager().updatePlayerRank(player);
     }
 
+    public static List<String> deadPlayers = new ArrayList<>();
+
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player killed = event.getEntity();
         Player killer = killed.getKiller();
+        if (killer == null) {
+            if (event.getEntity().getLastDamageCause().getDamageSource().getCausingEntity() instanceof Player kil) {
+                killer = kil;
+            }
+        }
         if (killer != null) {
             if (!plugin.getPointManager().isFirstKillDone()) {
                 plugin.getPointManager().addPoints(killer, "first_kill_lobby");
                 plugin.getPointManager().setFirstKillDone();
-            } else if (plugin.getPointManager().isFirstKill(killer)) {
-                plugin.getPointManager().addPoints(killer, "first_kill");
             }
-            plugin.getPointManager().addPoints(killer, "kill");
+            if (plugin.getPointManager().isFirstKill(killer)) {
+                plugin.getPointManager().addPoints(killer, "first_kill");
+            } else {
+                plugin.getPointManager().addPoints(killer, "kill");
+            }
             plugin.getPointManager().addKill(killer, killed);
             plugin.getEffectManager().executeRankEffects(killer, "onKill");
         }
 
         plugin.getPointManager().addLastDead(killed.getName());
+        deadPlayers.add(event.getPlayer().getName());
     }
 
     @EventHandler
     public void onItemConsume(PlayerItemConsumeEvent event) {
-        if (event.getItem().getType() == Material.ENCHANTED_GOLDEN_APPLE) {
+        if (event.getItem().getType() == Material.GOLDEN_APPLE) {
             plugin.getPointManager().addPoints(event.getPlayer(), "notch_apple");
         }
     }
 
     @EventHandler
     public void onEnchantItem(EnchantItemEvent event) {
-        if (event.getExpLevelCost() >= 30) {
+        if (event.getExpLevelCost() >= 15) {
             plugin.getPointManager().addPoints(event.getEnchanter(), "high_level_enchant");
         }
     }
 
-    public static Map<UUID, Location> lastBlock = new HashMap<>();
+    public static Map<String, Location> lastBlock = new HashMap<>();
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
-        lastBlock.put(player.getUniqueId(), event.getBlock().getLocation());
+        lastBlock.put(player.getName(), event.getBlock().getLocation());
         plugin.getEffectManager().executeRankEffects(player, "mining_effect");
     }
 

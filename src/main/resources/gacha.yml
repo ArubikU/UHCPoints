@@ -1,0 +1,156 @@
+# Configuración del Gachapón
+
+cost: 100
+
+messages:
+  player-only: "<red>Este comando solo puede ser usado por jugadores.</red>"
+  gacha-help: "<yellow>Usa <green>/gacha</green> para abrir el menú del gachapón.</yellow>"
+  gacha-spin: "<green>¡Has girado el gachapón!</green>"
+  not-enough-points: "<red>No tienes suficientes puntos para girar el gachapón.</red>"
+  points-balance: "<yellow>Tienes <green>%d</green> puntos.</yellow>"
+  unknown-command: "<red>Comando desconocido. Usa /gacha para ver los comandos disponibles.</red>"
+  equip-effect: "<green>Has equipado el efecto: %s</green>"
+  gacha-spin-success: "<green>¡Has obtenido el efecto %effect%!</green>"
+  effect-equipped: "<green>Has equipado el efecto %effect%.</green>"
+
+guis:
+  main_menu:
+    title: "Menú del Gachapón"
+    size: 27
+    items:
+      spin:
+        slot: 11
+        material: ENDER_CHEST
+        name: "Girar Gachapón"
+        lore:
+          - "Cuesta ${cost} puntos"
+          - "¡Obtén efectos increíbles!"
+      equip:
+        slot: 15
+        material: CHEST
+        name: "Equipar Efectos"
+        lore:
+          - "Gestiona tus efectos obtenidos"
+  equip_menu:
+    title: "Equipar Efectos"
+    size: 54
+
+prizes:
+  # Arrow Trail Effects
+  - id: "fire_arrow"
+    type: ARROW_TRAIL
+    rarity: COMMON
+    chance: 10
+  - id: "ice_arrow"
+    type: ARROW_TRAIL
+    rarity: COMMON
+    chance: 10
+  - id: "rainbow_arrow"
+    type: ARROW_TRAIL
+    rarity: RARE
+    chance: 5
+  - id: "music_arrow"
+    type: ARROW_TRAIL
+    rarity: RARE
+    chance: 5
+  - id: "ender_arrow"
+    type: ARROW_TRAIL
+    rarity: EPIC
+    chance: 2
+
+  # Death Effects
+  - id: "explosion_death"
+    type: DEATH
+    rarity: RARE
+    chance: 5
+  - id: "lightning_death"
+    type: DEATH
+    rarity: RARE
+    chance: 5
+  - id: "firework_death"
+    type: DEATH
+    rarity: EPIC
+    chance: 3
+  - id: "soul_death"
+    type: DEATH
+    rarity: EPIC
+    chance: 3
+  - id: "totem_death"
+    type: DEATH
+    rarity: LEGENDARY
+    chance: 1
+
+  # Aura Effects
+  - id: "flame_aura"
+    type: AURA
+    rarity: COMMON
+    chance: 10
+  - id: "heart_aura"
+    type: AURA
+    rarity: COMMON
+    chance: 10
+  - id: "enchant_aura"
+    type: AURA
+    rarity: RARE
+    chance: 5
+  - id: "slime_aura"
+    type: AURA
+    rarity: RARE
+    chance: 5
+  - id: "glitter_aura"
+    type: AURA
+    rarity: EPIC
+    chance: 2
+
+translation:
+  # Arrow Trail Effects
+  fire_arrow:
+    name: "<orange>Flecha de Fuego</orange>"
+    lore: "<red>Deja un rastro de fuego a tu paso</red>"
+  ice_arrow:
+    name: "<aqua>Flecha de Hielo</aqua>"
+    lore: "<blue>Congela el aire a tu alrededor</blue>"
+  rainbow_arrow:
+    name: "<yellow>Flecha Arcoíris</yellow>"
+    lore: "<light_purple>Ilumina el cielo con colores</light_purple>"
+  music_arrow:
+    name: "<green>Flecha Musical</green>"
+    lore: "<dark_green>Toca una melodía mientras vuela</dark_green>"
+  ender_arrow:
+    name: "<dark_purple>Flecha del End</dark_purple>"
+    lore: "<light_purple>Deja un rastro de partículas del End</light_purple>"
+
+  # Death Effects
+  explosion_death:
+    name: "<red>Muerte Explosiva</red>"
+    lore: "<dark_red>Explota en un espectáculo al morir</dark_red>"
+  lightning_death:
+    name: "<yellow>Muerte Relámpago</yellow>"
+    lore: "<gold>Un rayo cae del cielo al morir</gold>"
+  firework_death:
+    name: "<light_purple>Muerte Pirotécnica</light_purple>"
+    lore: "<dark_purple>Fuegos artificiales celebran tu caída</dark_purple>"
+  soul_death:
+    name: "<aqua>Muerte Espiritual</aqua>"
+    lore: "<dark_aqua>Tu alma se eleva al morir</dark_aqua>"
+  totem_death:
+    name: "<green>Muerte de Tótem</green>"
+    lore: "<dark_green>Efecto de tótem al morir</dark_green>"
+
+  # Aura Effects
+  flame_aura:
+    name: "<red>Aura de Fuego</red>"
+    lore: "<gold>Te rodea un aura ardiente</gold>"
+  heart_aura:
+    name: "<light_purple>Aura de Amor</light_purple>"
+    lore: "<red>Esparce corazones a tu alrededor</red>"
+  enchant_aura:
+    name: "<dark_purple>Aura de Encantamiento</dark_purple>"
+    lore: "<light_purple>Runas mágicas flotan a tu alrededor</light_purple>"
+  slime_aura:
+    name: "<green>Aura de Slime</green>"
+    lore: "<dark_green>Deja un rastro pegajoso</dark_green>"
+  glitter_aura:
+    name: "<yellow>Aura Brillante</yellow>"
+    lore: "<gold>Brilla como las estrellas</gold>"
+
