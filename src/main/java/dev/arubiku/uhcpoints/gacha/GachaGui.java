@@ -6,16 +6,19 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 import dev.arubiku.uhcpoints.gacha.GachaDataManager.GachaPlayerData;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public class GachaGui {
     private final GachaponManager plugin;
@@ -62,7 +65,8 @@ public class GachaGui {
         meta.displayName(Component.text(guiItem.getName()).decoration(TextDecoration.ITALIC, false));
         List<Component> lore = new ArrayList<>();
         for (String loreLine : guiItem.getLore()) {
-            lore.add(Component.text(loreLine.replace("${points}", plugin.getGachaConfigManager().getCost() + ""))
+            lore.add(MiniMessage.miniMessage()
+                    .deserialize(loreLine.replace("${cost}", plugin.getGachaConfigManager().getCost() + ""))
                     .decoration(TextDecoration.ITALIC, false).colorIfAbsent(TextColor.color(255, 0, 0)));
         }
         meta.lore(lore);
@@ -90,6 +94,8 @@ public class GachaGui {
                 .getPrizeTranslation(effect.getId());
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
+        meta.getPersistentDataContainer().set(NamespacedKey.minecraft("gacha"), PersistentDataType.STRING,
+                effect.getId());
         meta.displayName(translation.getName().decoration(TextDecoration.ITALIC, false));
         meta.lore(List.of(translation.getLore().decoration(TextDecoration.ITALIC, false)));
         item.setItemMeta(meta);

@@ -1,3 +1,4 @@
+
 # Configuración del Gachapón
 
 cost: 100
@@ -12,6 +13,8 @@ messages:
   equip-effect: "<green>Has equipado el efecto: %s</green>"
   gacha-spin-success: "<green>¡Has obtenido el efecto %effect%!</green>"
   effect-equipped: "<green>Has equipado el efecto %effect%.</green>"
+  effects-remove: "<green>Te has quitado los efectos.</green>"
+
 
 guis:
   main_menu:
@@ -57,6 +60,46 @@ prizes:
     type: ARROW_TRAIL
     rarity: EPIC
     chance: 2
+  - id: "lightning_arrow"
+    type: ARROW_TRAIL
+    rarity: EPIC
+    chance: 2
+  - id: "smoke_arrow"
+    type: ARROW_TRAIL
+    rarity: COMMON
+    chance: 10
+  - id: "water_arrow"
+    type: ARROW_TRAIL
+    rarity: COMMON
+    chance: 10
+  - id: "lava_arrow"
+    type: ARROW_TRAIL
+    rarity: RARE
+    chance: 5
+  - id: "redstone_arrow"
+    type: ARROW_TRAIL
+    rarity: RARE
+    chance: 5
+  - id: "sparkle_arrow"
+    type: ARROW_TRAIL
+    rarity: EPIC
+    chance: 2
+  - id: "heart_arrow"
+    type: ARROW_TRAIL
+    rarity: RARE
+    chance: 5
+  - id: "soul_arrow"
+    type: ARROW_TRAIL
+    rarity: EPIC
+    chance: 2
+  - id: "enchant_arrow"
+    type: ARROW_TRAIL
+    rarity: RARE
+    chance: 5
+  - id: "totem_arrow"
+    type: ARROW_TRAIL
+    rarity: LEGENDARY
+    chance: 1
 
   # Death Effects
   - id: "explosion_death"
@@ -76,6 +119,46 @@ prizes:
     rarity: EPIC
     chance: 3
   - id: "totem_death"
+    type: DEATH
+    rarity: LEGENDARY
+    chance: 1
+  - id: "smoke_death"
+    type: DEATH
+    rarity: COMMON
+    chance: 10
+  - id: "ender_death"
+    type: DEATH
+    rarity: EPIC
+    chance: 3
+  - id: "water_death"
+    type: DEATH
+    rarity: RARE
+    chance: 5
+  - id: "lava_death"
+    type: DEATH
+    rarity: RARE
+    chance: 5
+  - id: "heart_death"
+    type: DEATH
+    rarity: RARE
+    chance: 5
+  - id: "snow_death"
+    type: DEATH
+    rarity: RARE
+    chance: 5
+  - id: "music_death"
+    type: DEATH
+    rarity: EPIC
+    chance: 3
+  - id: "dragon_death"
+    type: DEATH
+    rarity: LEGENDARY
+    chance: 1
+  - id: "rainbow_death"
+    type: DEATH
+    rarity: EPIC
+    chance: 3
+  - id: "void_death"
     type: DEATH
     rarity: LEGENDARY
     chance: 1
@@ -101,11 +184,51 @@ prizes:
     type: AURA
     rarity: EPIC
     chance: 2
+  - id: "smoke_aura"
+    type: AURA
+    rarity: COMMON
+    chance: 10
+  - id: "water_aura"
+    type: AURA
+    rarity: COMMON
+    chance: 10
+  - id: "ender_aura"
+    type: AURA
+    rarity: EPIC
+    chance: 2
+  - id: "redstone_aura"
+    type: AURA
+    rarity: RARE
+    chance: 5
+  - id: "soul_aura"
+    type: AURA
+    rarity: EPIC
+    chance: 2
+  - id: "totem_aura"
+    type: AURA
+    rarity: LEGENDARY
+    chance: 1
+  - id: "snow_aura"
+    type: AURA
+    rarity: RARE
+    chance: 5
+  - id: "music_aura"
+    type: AURA
+    rarity: RARE
+    chance: 5
+  - id: "dragon_aura"
+    type: AURA
+    rarity: LEGENDARY
+    chance: 1
+  - id: "rainbow_aura"
+    type: AURA
+    rarity: EPIC
+    chance: 2
 
 translation:
   # Arrow Trail Effects
   fire_arrow:
-    name: "<orange>Flecha de Fuego</orange>"
+    name: "<gold>Flecha de Fuego</gold>"
     lore: "<red>Deja un rastro de fuego a tu paso</red>"
   ice_arrow:
     name: "<aqua>Flecha de Hielo</aqua>"
@@ -119,6 +242,36 @@ translation:
   ender_arrow:
     name: "<dark_purple>Flecha del End</dark_purple>"
     lore: "<light_purple>Deja un rastro de partículas del End</light_purple>"
+  lightning_arrow:
+    name: "<yellow>Flecha Relámpago</yellow>"
+    lore: "<gold>Invoca relámpagos a su paso</gold>"
+  smoke_arrow:
+    name: "<gray>Flecha de Humo</gray>"
+    lore: "<dark_gray>Deja una estela de humo</dark_gray>"
+  water_arrow:
+    name: "<blue>Flecha de Agua</blue>"
+    lore: "<aqua>Salpica agua a su paso</aqua>"
+  lava_arrow:
+    name: "<dark_red>Flecha de Lava</dark_red>"
+    lore: "<red>Deja un rastro de lava ardiente</red>"
+  redstone_arrow:
+    name: "<red>Flecha de Redstone</red>"
+    lore: "<dark_red>Emite señales de redstone</dark_red>"
+  sparkle_arrow:
+    name: "<white>Flecha Brillante</white>"
+    lore: "<yellow>Brilla intensamente mientras vuela</yellow>"
+  heart_arrow:
+    name: "<light_purple>Flecha de Amor</light_purple>"
+    lore: "<red>Esparce corazones por donde pasa</red>"
+  soul_arrow:
+    name: "<aqua>Flecha de Almas</aqua>"
+    lore: "<dark_aqua>Libera almas a su paso</dark_aqua>"
+  enchant_arrow:
+    name: "<light_purple>Flecha Encantada</light_purple>"
+    lore: "<dark_purple>Emana energía mágica</dark_purple>"
+  totem_arrow:
+    name: "<green>Flecha de Tótem</green>"
+    lore: "<dark_green>Invoca el poder de los tótems</dark_green>"
 
   # Death Effects
   explosion_death:
@@ -136,6 +289,36 @@ translation:
   totem_death:
     name: "<green>Muerte de Tótem</green>"
     lore: "<dark_green>Efecto de tótem al morir</dark_green>"
+  smoke_death:
+    name: "<gray>Muerte Humeante</gray>"
+    lore: "<dark_gray>Te desvaneces en una nube de humo</dark_gray>"
+  ender_death:
+    name: "<dark_purple>Muerte del End</dark_purple>"
+    lore: "<light_purple>Te teletransportas al morir</light_purple>"
+  water_death:
+    name: "<blue>Muerte Acuática</blue>"
+    lore: "<aqua>Te conviertes en agua al morir</aqua>"
+  lava_death:
+    name: "<dark_red>Muerte de Lava</dark_red>"
+    lore: "<red>Te fundes en lava al morir</red>"
+  heart_death:
+    name: "<light_purple>Muerte Amorosa</light_purple>"
+    lore: "<red>Esparces corazones al morir</red>"
+  snow_death:
+    name: "<white>Muerte Helada</white>"
+    lore: "<aqua>Te congelas en una estatua de hielo</aqua>"
+  music_death:
+    name: "<green>Muerte Musical</green>"
+    lore: "<dark_green>Una melodía suena al morir</dark_green>"
+  dragon_death:
+    name: "<dark_purple>Muerte de Dragón</dark_purple>"
+    lore: "<light_purple>Ruge como un dragón al morir</light_purple>"
+  rainbow_death:
+    name: "<yellow>Muerte Arcoíris</yellow>"
+    lore: "<light_purple>Explota en colores al morir</light_purple>"
+  void_death:
+    name: "<black>Muerte del Vacío</black>"
+    lore: "<dark_gray>Te desvaneces en la nada</dark_gray>"
 
   # Aura Effects
   flame_aura:
@@ -153,4 +336,33 @@ translation:
   glitter_aura:
     name: "<yellow>Aura Brillante</yellow>"
     lore: "<gold>Brilla como las estrellas</gold>"
-
+  smoke_aura:
+    name: "<gray>Aura de Humo</gray>"
+    lore: "<dark_gray>Te rodea una nube de humo</dark_gray>"
+  water_aura:
+    name: "<blue>Aura de Agua</blue>"
+    lore: "<aqua>Gotas de agua flotan a tu alrededor</aqua>"
+  ender_aura:
+    name: "<dark_purple>Aura del End</dark_purple>"
+    lore: "<light_purple>Partículas del End te rodean</light_purple>"
+  redstone_aura:
+    name: "<red>Aura de Redstone</red>"
+    lore: "<dark_red>Emites señales de redstone</dark_red>"
+  soul_aura:
+    name: "<aqua>Aura de Almas</aqua>"
+    lore: "<dark_aqua>Almas perdidas flotan a tu alrededor</dark_aqua>"
+  totem_aura:
+    name: "<green>Aura de Tótem</green>"
+    lore: "<dark_green>El poder de los tótems te rodea</dark_green>"
+  snow_aura:
+    name: "<white>Aura de Nieve</white>"
+    lore: "<aqua>Copos de nieve danzan a tu alrededor</aqua>"
+  music_aura:
+    name: "<green>Aura Musical</green>"
+    lore: "<dark_green>Notas musicales flotan a tu alrededor</dark_green>"
+  dragon_aura:
+    name: "<dark_purple>Aura de Dragón</dark_purple>"
+    lore: "<light_purple>El aliento del dragón te rodea</light_purple>"
+  rainbow_aura:
+    name: "<yellow>Aura Arcoíris</yellow>"
+    lore: "<light_purple>Colores brillantes te envuelven</light_purple>"

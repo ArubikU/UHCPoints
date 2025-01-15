@@ -3,10 +3,12 @@ package dev.arubiku.uhcpoints.gacha;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -97,6 +99,11 @@ public class GachaConfigManager {
         return MiniMessage.miniMessage().deserialize(message);
     }
 
+    public Component getMessage(String key, String def) {
+        String message = messages.getOrDefault(key, def);
+        return MiniMessage.miniMessage().deserialize(message);
+    }
+
     public PrizeTranslation getPrizeTranslation(String id) {
         return prizeTranslations.getOrDefault(id, new PrizeTranslation("Unknown Prize", "No description available"));
     }
@@ -109,18 +116,51 @@ public class GachaConfigManager {
         return config.getInt("cost", 100);
     }
 
+    public List<ConfigurationSection> getConfigList(ConfigurationSection config, String path) {
+        if (!config.isList(path))
+            return null;
+
+        List<ConfigurationSection> list = new LinkedList();
+
+        for (Object object : config.getList(path)) {
+            if (object instanceof Map) {
+                MemoryConfiguration mc = new MemoryConfiguration();
+                mc.addDefaults((Map) object);
+
+                list.add(mc);
+            }
+        }
+
+        return list;
+    }
+
     public List<PrizeConfig> getPrizes() {
         List<PrizeConfig> prizes = new ArrayList<>();
         ConfigurationSection prizesSection = config.getConfigurationSection("prizes");
-        if (prizesSection != null) {
-            for (String key : prizesSection.getKeys(false)) {
-                ConfigurationSection prizeSection = prizesSection.getConfigurationSection(key);
-                if (prizeSection != null) {
-                    String id = prizeSection.getString("id");
-                    String type = prizeSection.getString("type");
-                    String rarity = prizeSection.getString("rarity");
-                    int chance = prizeSection.getInt("chance");
-                    prizes.add(new PrizeConfig(id, type, rarity, chance));
+        if (config.contains("prizes")) {
+            if (config.isList("prizes")) {
+
+                for (ConfigurationSection prizeSection : getConfigList(config, "prizes")) {
+
+                    if (prizeSection != null) {
+                        String id = prizeSection.getString("id");
+                        String type = prizeSection.getString("type");
+                        String rarity = prizeSection.getString("rarity");
+                        int chance = prizeSection.getInt("chance");
+                        prizes.add(new PrizeConfig(id, type, rarity, chance));
+                    }
+                }
+            } else {
+
+                for (String key : prizesSection.getKeys(false)) {
+                    ConfigurationSection prizeSection = prizesSection.getConfigurationSection(key);
+                    if (prizeSection != null) {
+                        String id = prizeSection.getString("id");
+                        String type = prizeSection.getString("type");
+                        String rarity = prizeSection.getString("rarity");
+                        int chance = prizeSection.getInt("chance");
+                        prizes.add(new PrizeConfig(id, type, rarity, chance));
+                    }
                 }
             }
         }

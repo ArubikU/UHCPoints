@@ -166,7 +166,7 @@ public class UHCPointsCommand {
                                                         Integer points = context
                                                                 .getArgument("points", IntegerRangeProvider.class)
                                                                 .range().lowerEndpoint();
-                                                        plugin.getPointManager().addPoints(
+                                                        plugin.getPointManager().setPoints(
                                                                 player, points);
 
                                                         return 1;

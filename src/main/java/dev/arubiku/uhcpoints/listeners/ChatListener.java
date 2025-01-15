@@ -52,6 +52,8 @@ public class ChatListener implements Listener {
                     }
                     if (!UHCPointsListener.deadPlayers.contains(pl.getName()))
                         continue;
+                    if (pl.getUniqueId() == event.getPlayer().getUniqueId())
+                        return;
                     pl.sendMessage(endforspectator);
                 }
             } else {

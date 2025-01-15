@@ -1,7 +1,13 @@
 package dev.arubiku.uhcpoints.gacha;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,12 +19,38 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 
 public class GachaListener implements Listener {
     private final GachaponManager plugin;
 
     public GachaListener(GachaponManager plugin) {
         this.plugin = plugin;
+        Bukkit.getScheduler().runTaskTimer(plugin.getPlugin(), () -> {
+            Iterator<Map.Entry<UUID, UUID>> iterator = arrows.entrySet().iterator();
+
+            while (iterator.hasNext()) {
+                Map.Entry<UUID, UUID> entry = iterator.next();
+                UUID uuid = entry.getKey();
+                UUID playerUUID = entry.getValue();
+
+                if (Bukkit.getEntity(uuid) instanceof Arrow arrow) {
+                    if (!Bukkit.getOfflinePlayer(playerUUID).isConnected()) {
+                        iterator.remove();
+                        continue;
+                    }
+                    Player player = Bukkit.getPlayer(playerUUID);
+                    GachaEffect arrowTrail = plugin.getGachaDataManager().getPlayerData(player).getArrowTrailEffect();
+                    if (arrowTrail != null) {
+                        arrowTrail.apply(arrow, player);
+                        arrows.put(arrow.getUniqueId(), player.getUniqueId());
+                    }
+                } else {
+                    iterator.remove();
+                }
+            }
+        }, 0, 1);
+
     }
 
     @EventHandler
@@ -26,6 +58,8 @@ public class GachaListener implements Listener {
         // Initialize player data if necessary
         plugin.getGachaDataManager().getPlayerData(event.getPlayer());
     }
+
+    public static Map<UUID, UUID> arrows = new HashMap();
 
     @EventHandler
     public void onEntityShootBow(EntityShootBowEvent event) {
@@ -35,6 +69,7 @@ public class GachaListener implements Listener {
             GachaEffect arrowTrail = plugin.getGachaDataManager().getPlayerData(player).getArrowTrailEffect();
             if (arrowTrail != null) {
                 arrowTrail.apply(arrow, player);
+                arrows.put(arrow.getUniqueId(), player.getUniqueId());
             }
         }
     }
@@ -51,6 +86,8 @@ public class GachaListener implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
+        if (player.getGameMode() != GameMode.SURVIVAL)
+            return;
         GachaEffect auraEffect = plugin.getGachaDataManager().getPlayerData(player).getAuraEffect();
         if (auraEffect != null) {
             auraEffect.apply(player);
@@ -102,15 +139,8 @@ public class GachaListener implements Listener {
     }
 
     private GachaEffect getEffectFromItem(ItemStack item) {
-        if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) {
-            String name = item.getItemMeta().getDisplayName();
-            for (GachaEffect effect : GachaEffect.values()) {
-                if (name.contains(effect.getId())) {
-                    return effect;
-                }
-            }
-        }
-        return null;
+        return GachaEffect.getById(item.getItemMeta().getPersistentDataContainer().get(NamespacedKey.minecraft("gacha"),
+                PersistentDataType.STRING));
     }
 
     private void equipEffect(Player player, GachaEffect effect) {
@@ -127,6 +157,7 @@ public class GachaListener implements Listener {
                 break;
         }
         player.sendMessage(plugin.getGachaConfigManager().getMessage("effect-equipped")
-                .replaceText(builder -> builder.match("%effect%").replacement(effect.getId())));
+                .replaceText(builder -> builder.match("%effect%")
+                        .replacement(plugin.getGachaConfigManager().getPrizeTranslation(effect.getId()).getName())));
     }
 }

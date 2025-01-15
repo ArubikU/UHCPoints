@@ -96,9 +96,9 @@ public class GachaDataManager {
     public static class GachaPlayerData {
         private int points;
         private List<String> unlockedEffects;
-        private GachaEffect arrowTrailEffect;
-        private GachaEffect deathEffect;
-        private GachaEffect auraEffect;
+        public GachaEffect arrowTrailEffect;
+        public GachaEffect deathEffect;
+        public GachaEffect auraEffect;
 
         public GachaPlayerData(int points, List<String> unlockedEffects) {
             this.points = points;

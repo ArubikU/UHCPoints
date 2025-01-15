@@ -17,6 +17,20 @@ public class GachaManager {
         this.random = new Random();
     }
 
+    public boolean cantSpin(Player player) {
+        List<GachaConfigManager.PrizeConfig> prizes = plugin.getGachaConfigManager().getPrizes();
+        List<GachaEffect> prices = new ArrayList<>();
+        for (PrizeConfig conf : prizes) {
+            if (!plugin.getGachaDataManager().getPlayerData(player).getUnlockedEffects().contains(conf.getId())) {
+                for (int i = 0; i < conf.getChance(); i++) {
+                    prices.add(GachaEffect.getById(conf.getId()));
+                }
+            }
+        }
+        return prices.isEmpty();
+
+    }
+
     public GachaEffect spinGacha(Player player) {
         List<GachaConfigManager.PrizeConfig> prizes = plugin.getGachaConfigManager().getPrizes();
         List<GachaEffect> prices = new ArrayList<>();
